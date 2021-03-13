@@ -6,12 +6,25 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OperationRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OperationRepository::class)
  */
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+    'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
+    'post' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
+],
+    itemOperations: [
+    'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
+    'patch' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
+    'delete',
+],
+    denormalizationContext: ['groups' => ['user:Operation:write']],
+    normalizationContext: ['groups' => ['user:Operation:read']],
+)]
 class Operation
 {
     /**
@@ -25,22 +38,26 @@ class Operation
      * @ORM\Column(type="float")
      */
     #[Assert\NotBlank]
+    #[Groups(['user:Operation:read', 'user:Operation:write'])]
     private float $amount;
 
     /**
      * @ORM\Column(type="float")
      */
     #[Assert\NotBlank]
+    #[Groups(['user:Operation:read', 'user:Operation:write'])]
     private float $balanceAfterSurgery;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['user:Operation:read'])]
     private DateTime $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['user:Operation:read'])]
     private DateTime $updatedAt;
 
     /**
@@ -48,6 +65,7 @@ class Operation
      * @ORM\JoinColumn(nullable=false)
      */
     #[Assert\NotNull]
+    #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
     private OperationLocation $location;
 
     public function __construct()

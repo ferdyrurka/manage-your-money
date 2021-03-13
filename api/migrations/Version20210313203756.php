@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210312221319 extends AbstractMigration
+final class Version20210313203756 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,15 +20,13 @@ final class Version20210312221319 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_BBE8F6465E237E06 ON operation_location (name)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_A3AE0AB85E237E06 ON operation_type (name)');
+        $this->addSql('ALTER TABLE operation_location ADD slugs LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\'');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX UNIQ_BBE8F6465E237E06 ON operation_location');
-        $this->addSql('DROP INDEX UNIQ_A3AE0AB85E237E06 ON operation_type');
+        $this->addSql('ALTER TABLE operation_location DROP slugs');
     }
 
     public function isTransactional(): bool
