@@ -3,27 +3,28 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\OperationRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=OperationRepository::class)
+ * @ORM\Entity
  */
 #[ApiResource(
     collectionOperations: [
-    'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
-    'post' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
-],
+        'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
+        'post' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
+    ],
+    graphql: ['item_query', 'collection_query'],
     itemOperations: [
-    'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
-    'patch' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
-    'delete',
-],
+        'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
+        'patch' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
+        //TODO: delete is change status
+        // 'delete',
+    ],
     denormalizationContext: ['groups' => ['user:Operation:write']],
-    normalizationContext: ['groups' => ['user:Operation:read']],
+    normalizationContext: ['groups' => ['user:Operation:read']]
 )]
 class Operation
 {

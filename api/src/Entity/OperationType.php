@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\OperationTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -12,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=OperationTypeRepository::class)
+ * @ORM\Entity
  * TODO: go to only admin
  */
 #[UniqueEntity(fields: ['name'])]
@@ -21,11 +20,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'get' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
         'post' => ['denormalization_context' => ['groups' => ['user:OperationType:write']]],
     ],
+    graphql: [
+        'item_query' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
+        'collection_query' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
+    ],
     itemOperations: [
         'get' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
         'patch' => ['denormalization_context' => ['groups' => ['user:OperationType:write']]],
-//TODO: delete is change status
-//    'delete',
+        //TODO: delete is change status
+        // 'delete',
     ],
     denormalizationContext: ['groups' => ['user:OperationType:write']],
     normalizationContext: ['groups' => ['user:OperationType:read']],

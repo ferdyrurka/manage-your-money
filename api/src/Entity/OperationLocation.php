@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\OperationLocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,21 +13,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=OperationLocationRepository::class)
+ * @ORM\Entity
  * TODO: go to only admin
  */
 #[UniqueEntity(fields: ['name'])]
 #[ApiResource(
     collectionOperations: [
-    'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
-    'post' => ['denormalization_context' => ['groups' => ['user:OperationLocation:write']]],
-],
+        'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
+        'post' => ['denormalization_context' => ['groups' => ['user:OperationLocation:write']]],
+    ],
+    graphql: ['item_query', 'collection_query'],
     itemOperations: [
-    'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
-    'patch' => ['denormalization_context' => ['groups' => ['user:OperationLocation:write']]],
-//TODO: delete is change status
-//    'delete',
-],
+        'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
+        'patch' => ['denormalization_context' => ['groups' => ['user:OperationLocation:write']]],
+    //TODO: delete is change status
+    //    'delete',
+    ],
     denormalizationContext: ['groups' => ['user:OperationLocation:write']],
     normalizationContext: ['groups' => ['user:OperationLocation:read']],
 )]
