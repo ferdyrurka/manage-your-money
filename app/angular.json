@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "manage-you-money-app"
+    }
+  },
+  "defaultProject": "manage-you-money-app",
+  "cli": {
+    "analytics": "26d0bc1b-d150-4555-8a91-e7353f0ac3b8"
+  }
 }
