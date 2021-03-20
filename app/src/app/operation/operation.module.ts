@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { CreateComponent } from './page/type/create/create.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [CreateComponent],
   imports: [],
   providers: [],
   bootstrap: []
