@@ -9,6 +9,5 @@ api_platform:
         versions: [3]
     graphql:
         enabled: true
-        #TODO: to parametrized!
         graphql_playground:
             enabled: true
