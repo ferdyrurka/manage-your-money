@@ -12,9 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTreeModule} from '@angular/material/tree';
-import {CdkTreeModule} from '@angular/cdk/tree';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -26,11 +24,11 @@ import {MatListModule} from '@angular/material/list';
         AppRoutingModule,
         OperationModule,
         OperationRoutingModule,
+        BrowserAnimationsModule,
         MatIconModule,
         MatToolbarModule,
         MatButtonModule,
         MatSidenavModule,
-        BrowserAnimationsModule,
         MatListModule,
     ],
   providers: [],

@@ -3,3 +3,31 @@
 body {
   margin: 0;
 }
+
+.small-form-wrapper {
+  min-width: 320px;
+  width: 100%;
+  max-width: 480px;
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  input {
+    min-width: 320px;
+  }
+}
+
+.container {
+  margin-top: 30px;
+  display: flex;
+}
+
+.mt-1 {
+  margin-top: 10px;
+}
+
+.mb-1 {
+  margin-bottom: 10px;
+}

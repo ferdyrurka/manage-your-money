@@ -1,0 +1,22 @@
+<div class="container">
+  <div>
+    <mat-form-field class="small-form-wrapper center" [formGroup]="typeForm">
+      <mat-label>Name</mat-label>
+
+      <input type="text" matInput [formControl]="typeForm.controls.name" [errorStateMatcher]="matcher"
+             placeholder="Eg. pay by credit card">
+
+      <mat-error *ngIf="typeForm.controls['name'].hasError('required')">
+        Field name is required field
+      </mat-error>
+
+      <mat-error *ngIf="typeForm.controls['name'].hasError('maxlength')">
+        Maximum length for name field is 64 chars
+      </mat-error>
+    </mat-form-field>
+
+    <div class="mt-1">
+      <button mat-raised-button color="primary" (click)="save();">Save</button>
+    </div>
+  </div>
+</div>
