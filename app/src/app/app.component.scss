@@ -1,0 +1,28 @@
+.app-wrapper {
+  height: 100vh;
+
+  .side-nav {
+    padding: 20px 15px 0 15px;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s ease-in-out;
+
+      &:hover, &:active {
+        text-decoration: none;
+        color: #ccc;
+        transition: 0.3s ease-in-out;
+      }
+    }
+  }
+
+  .brand {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover, &:active, &:focus {
+      text-decoration: none;
+    }
+  }
+}
