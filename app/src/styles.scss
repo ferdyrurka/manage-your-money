@@ -5,17 +5,13 @@ body {
 }
 
 .small-form-wrapper {
-  min-width: 320px;
+  margin: 0 10px 0 10px;
+
   width: 100%;
-  max-width: 480px;
+  max-width: 640px;
 
-  .center {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  input {
-    min-width: 320px;
+  mat-form-field {
+    width: 100%;
   }
 }
 
@@ -30,4 +26,21 @@ body {
 
 .mb-1 {
   margin-bottom: 10px;
+}
+
+.hidden-animation {
+  transition: 0.2s ease-in-out;
+  opacity: 0;
+}
+
+.show-animation {
+  transition: 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 30px;
 }

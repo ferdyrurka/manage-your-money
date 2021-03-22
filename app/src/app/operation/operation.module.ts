@@ -3,11 +3,16 @@ import { CreateComponent } from './page/type/create/create.component';
 import { CreateFormComponent } from './component/type/create-form/create-form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {CommonModule} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MyErrorStateMatcher} from '../shared/service/my-error-state.matcher';
 import {MatButtonModule} from '@angular/material/button';
+import { TypeApi } from './api/type.api';
+import { HttpClientModule } from '@angular/common/http';
+import { TypeFactory } from './factory/type.factory';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [CreateComponent, CreateFormComponent],
@@ -17,9 +22,15 @@ import {MatButtonModule} from '@angular/material/button';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    HttpClientModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     MyErrorStateMatcher,
+    TypeApi,
+    TypeFactory,
   ],
   bootstrap: []
 })

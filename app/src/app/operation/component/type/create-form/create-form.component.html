@@ -1,9 +1,13 @@
-<div class="container">
-  <div>
-    <mat-form-field class="small-form-wrapper center" [formGroup]="typeForm">
+<div class="loading">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
+
+<div class="container" [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
+  <div class="small-form-wrapper" [formGroup]="typeForm">
+    <mat-form-field>
       <mat-label>Name</mat-label>
 
-      <input type="text" matInput [formControl]="typeForm.controls.name" [errorStateMatcher]="matcher"
+      <input type="text" matInput [formControl]="typeForm.get('name')" [errorStateMatcher]="matcher"
              placeholder="Eg. pay by credit card">
 
       <mat-error *ngIf="typeForm.controls['name'].hasError('required')">
@@ -15,8 +19,33 @@
       </mat-error>
     </mat-form-field>
 
+    <div formArrayName="slugs"
+         *ngFor="let item of typeForm.get('slugs')['controls']; let i = index;">
+
+      <mat-form-field [formGroupName]="i">
+        <mat-label>Slug</mat-label>
+
+        <input type="text" matInput [formControl]="item.get('slug')" [errorStateMatcher]="matcher"
+               placeholder="Eg. Cash withdrawal, Card payment, Bank transfer">
+
+        <mat-error *ngIf="item.get('slug').hasError('required')">
+          Field name is required field
+        </mat-error>
+
+        <mat-error *ngIf="item.get('slug').hasError('maxlength')">
+          Maximum length for name field is 256 chars
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button mat-icon-button aria-label="Add item" [disabled]="loading" (click)="addItem();">
+        <mat-icon>add_task</mat-icon>
+      </button>
+    </div>
+
     <div class="mt-1">
-      <button mat-raised-button color="primary" (click)="save();">Save</button>
+      <button mat-raised-button color="primary" [disabled]="loading" (click)="save();">Save</button>
     </div>
   </div>
 </div>
