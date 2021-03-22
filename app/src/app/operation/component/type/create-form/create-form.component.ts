@@ -14,7 +14,7 @@ export class CreateFormComponent implements OnInit {
 
   public typeForm: FormGroup;
 
-  public loading: boolean = false;
+  public loading = false;
 
   constructor(
     public matcher: MyErrorStateMatcher,
