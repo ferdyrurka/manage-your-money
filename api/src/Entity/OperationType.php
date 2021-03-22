@@ -54,7 +54,7 @@ class OperationType
      * @ORM\Column(type="array")
      */
     #[Assert\NotBlank]
-    #[Groups(['user:OperationType:write'])]
+    #[Groups(['user:OperationType:read', 'user:OperationType:write'])]
     private array $slugs = [];
 
     /**
