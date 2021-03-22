@@ -51,7 +51,7 @@ Required php ext:
 ### Run
 
 ```shell
-    npm run start
+  yarn start
 ```
 
 ## Author
