@@ -40,7 +40,7 @@ export class CreateFormComponent implements OnInit {
 
     items.markAllAsTouched();
 
-    if (this.typeForm.valid) {
+    if (items.valid) {
       items.push(this.createItem());
     }
   }

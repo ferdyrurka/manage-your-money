@@ -13,9 +13,10 @@ import { TypeFactory } from './factory/type.factory';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { IndexComponent } from './component/type/index/index.component';
 
 @NgModule({
-  declarations: [CreateComponent, CreateFormComponent],
+  declarations: [CreateComponent, CreateFormComponent, IndexComponent],
   imports: [
     ReactiveFormsModule,
     BrowserModule,
