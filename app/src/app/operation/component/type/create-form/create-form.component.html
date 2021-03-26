@@ -2,8 +2,10 @@
   <mat-spinner *ngIf="loading"></mat-spinner>
 </div>
 
-<div class="container" [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
+<div [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
   <div class="small-form-wrapper" [formGroup]="typeForm">
+    <h1>Create operation type</h1>
+
     <mat-form-field>
       <mat-label>Name</mat-label>
 

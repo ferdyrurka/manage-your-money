@@ -1,18 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CreateComponent as TypeCreateComponent } from './page/type/create/create.component';
+import { IndexComponent as TypeComponent } from './page/type/index/index.component';
 
 
 const routes: Routes = [
   {
     path: 'operation',
     children: [
-      {
-        path: 'type',
-        children: [
-          { path: 'create', component: TypeCreateComponent }
-        ]
-      }
+      { path: 'type', component: TypeComponent }
     ]
   }
 ];

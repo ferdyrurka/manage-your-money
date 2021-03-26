@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CreateComponent } from './page/type/create/create.component';
 import { CreateFormComponent } from './component/type/create-form/create-form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
@@ -13,10 +12,16 @@ import { TypeFactory } from './factory/type.factory';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { IndexComponent } from './component/type/index/index.component';
+import { IndexComponent } from './page/type/index/index.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
-  declarations: [CreateComponent, CreateFormComponent, IndexComponent],
+  declarations: [
+    CreateFormComponent,
+    IndexComponent,
+  ],
   imports: [
     ReactiveFormsModule,
     BrowserModule,
@@ -27,6 +32,9 @@ import { IndexComponent } from './component/type/index/index.component';
     MatIconModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   providers: [
     MyErrorStateMatcher,
