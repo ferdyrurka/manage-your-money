@@ -6,6 +6,7 @@ import { TypeFactory } from '../../../factory/type.factory';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import {MatDialogRef} from '@angular/material/dialog';
+import {ErrorMessageService} from '../../../../shared/service/error-message.service';
 
 @Component({
   selector: 'app-type-component-create-form',
@@ -25,7 +26,8 @@ export class CreateFormComponent implements OnInit, OnDestroy {
     private typeApi: TypeApi,
     private typeFactory: TypeFactory,
     private snackBar: MatSnackBar,
-    private modelRef: MatDialogRef<CreateFormComponent>
+    private modelRef: MatDialogRef<CreateFormComponent>,
+    private errorMessageService: ErrorMessageService,
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +43,9 @@ export class CreateFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.saveSubscriber.unsubscribe();
+    if (this.saveSubscriber) {
+      this.saveSubscriber.unsubscribe();
+    }
   }
 
   public addItem(): void {
@@ -67,36 +71,25 @@ export class CreateFormComponent implements OnInit, OnDestroy {
           this.snackBar.open(
             'You have created the operation type correctly.',
             null,
-            {
-              duration: 5000,
-            }
+            {duration: 5000,}
           );
 
           setTimeout(
-            () => {
-            this.modelRef.close();
-            },
-            200
+            () => { this.modelRef.close(); }, 200
           );
         },
         (err) => {
           this.loading = false;
 
           if (err.status === 422) {
-            this.snackBar.open('This type of operation already exists.', null, {duration: 5000 });
+            this.snackBar.open('This type of operation already exists.', null, { duration: 5000 });
 
             return;
           }
 
           console.error(err);
 
-          this.snackBar.open(
-            'Something went wrong, please try again in a moment. If the problem persists, contact your IT department.',
-            null,
-            {
-              duration: 10000,
-            }
-          );
+          this.errorMessageService.show();
         }
       );
     }

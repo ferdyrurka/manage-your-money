@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { MatListModule } from '@angular/material/list';
         MatButtonModule,
         MatSidenavModule,
         MatListModule,
+        GraphQLModule,
+        HttpClientModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

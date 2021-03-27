@@ -3,5 +3,7 @@ export class TypeModel {
 
   public slugs: string[];
 
-  public hash: string;
+  public id: string;
+
+  public cursor: string;
 }

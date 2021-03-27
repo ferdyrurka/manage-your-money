@@ -14,8 +14,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IndexComponent } from './page/type/index/index.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {ErrorMessageService} from '../shared/service/error-message.service';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MyErrorStateMatcher,
     TypeApi,
     TypeFactory,
+    ErrorMessageService,
   ],
   bootstrap: []
 })
