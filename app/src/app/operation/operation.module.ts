@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CreateFormComponent } from './component/type/create-form/create-form.component';
+import { FormComponent } from './component/type/form/form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -20,7 +20,7 @@ import {ErrorMessageService} from '../shared/service/error-message.service';
 
 @NgModule({
   declarations: [
-    CreateFormComponent,
+    FormComponent,
     IndexComponent,
   ],
   imports: [

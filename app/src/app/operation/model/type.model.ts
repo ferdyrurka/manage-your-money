@@ -1,7 +1,7 @@
 export class TypeModel {
   public name: string;
 
-  public slugs: string[];
+  public slugs;
 
   public id: string;
 

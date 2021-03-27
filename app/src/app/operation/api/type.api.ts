@@ -21,6 +21,7 @@ export class TypeApi {
                node {
                  name
                  id
+                 slugs
                }
                cursor
              }
@@ -63,6 +64,7 @@ export class TypeApi {
 
       model.id = edge.node.id;
       model.name = edge.node.name;
+      model.slugs = edge.node.slugs;
       model.cursor = edge.cursor;
 
       result.push(model);

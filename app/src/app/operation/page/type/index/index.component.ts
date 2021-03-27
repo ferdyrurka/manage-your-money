@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
-import { CreateFormComponent} from '../../../component/type/create-form/create-form.component';
+import { FormComponent} from '../../../component/type/form/form.component';
 import { TypeApi} from '../../../api/type.api';
 import { TypeModel} from '../../../model/type.model';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class IndexComponent implements OnInit, OnDestroy {
 
-  public readonly displayedColumns = ['id', 'name'];
+  public readonly displayedColumns = ['id', 'name', 'update'];
 
   public loading = true;
 
@@ -60,11 +60,25 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public openCreateModal(): void {
     this.modal.open(
-      CreateFormComponent,
+      FormComponent,
       {
         minWidth: '320px',
         maxWidth: '640px',
         width: '100%',
+      }
+    );
+  }
+
+  public openUpdateModal(model: TypeModel): void {
+    this.modal.open(
+      FormComponent,
+      {
+        minWidth: '320px',
+        maxWidth: '640px',
+        width: '100%',
+        data: {
+          model,
+        },
       }
     );
   }
