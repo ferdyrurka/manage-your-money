@@ -27,6 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: [
         'get' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
         'patch' => ['denormalization_context' => ['groups' => ['user:OperationType:write']]],
+        'put' => ['denormalization_context' => ['groups' => ['user:OperationType:write']]],
         //TODO: delete is change status
         // 'delete',
     ],
