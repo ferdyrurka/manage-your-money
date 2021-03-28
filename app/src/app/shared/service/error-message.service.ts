@@ -7,6 +7,11 @@ export class ErrorMessageService {
     private snackBar: MatSnackBar
   ) {}
 
+  public showDuplicate(): void
+  {
+    this.snackBar.open('This type of operation already exists.', null, {duration: 5000});
+  }
+
   public show(): void
   {
     this.snackBar.open(

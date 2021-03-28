@@ -7,12 +7,15 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .container {
   margin: 20px auto 0 auto;
   max-width: 1260px;
-  display: flex;
   padding: 0 10px;
-  flex-wrap: wrap;
 }
 
 .top-nav {
@@ -37,6 +40,7 @@ body {
   }
 
   mat-paginator {
+    width: 100%;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
   }

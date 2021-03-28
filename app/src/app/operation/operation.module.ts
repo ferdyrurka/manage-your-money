@@ -17,11 +17,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {ErrorMessageService} from '../shared/service/error-message.service';
+import { ListComponent } from './component/type/list/list.component';
 
 @NgModule({
   declarations: [
     FormComponent,
     IndexComponent,
+    ListComponent,
   ],
   imports: [
     ReactiveFormsModule,

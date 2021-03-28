@@ -7,42 +7,5 @@
     </div>
   </div>
 
-  <div class="loading">
-    <mat-spinner *ngIf="loading"></mat-spinner>
-  </div>
-
-  <div class="list-items" [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
-    <table mat-table [dataSource]="types">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="update">
-        <th mat-header-cell *matHeaderCellDef> Update </th>
-        <td mat-cell *matCellDef="let element">
-          <button mat-icon-button aria-label="Create" (click)="openUpdateModal(element)">
-            <mat-icon>update</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 25, 50, 100]"
-      [pageSize]="limit"
-      [length]="typesCount"
-      (page)="pageHandle($event)"
-      showFirstLastButtons
-    >
-    </mat-paginator>
-  </div>
+  <app-operation-type-list [eventEmitter]="eventEmitter"></app-operation-type-list>
 </div>

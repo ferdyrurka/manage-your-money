@@ -8,10 +8,14 @@ import {map} from 'rxjs/operators';
 
 @Injectable()
 export class TypeApi {
+  private findAllQuery;
+
+  private readonly uri: string = '/api/operation_types';
+
   constructor(private http: HttpClient, private apollo: Apollo) {}
 
   public findAll(limit: number, after: string|null, before: string|null): Observable<{result: TypeModel[]; totalCount: number}> {
-    return this.apollo
+    this.findAllQuery = this.apollo
       .watchQuery({
         query: gql`
           query FindAll($limit: Int!, $after: String, $before: String) {
@@ -32,14 +36,16 @@ export class TypeApi {
          }
         `,
         variables: { limit, after, before }
-      })
+      });
+
+    return this.findAllQuery
       .valueChanges
       .pipe(
         map((result: any) => result.data.operationTypes)
       )
       .pipe(
         map(
-          result => {
+          (result: any) => {
             return {
               totalCount: result.totalCount,
               result: this.findAllToResultModels(result.edges),
@@ -49,9 +55,21 @@ export class TypeApi {
       );
   }
 
+  public findAllRefresh(): void
+  {
+    this.findAllQuery.refetch();
+  }
+
   public save(type: TypeModel): Observable<TypeModel> {
+    if (type.id) {
+      return this.http.put<TypeModel>(
+        environment.apiUrl + type.id,
+        type
+      );
+    }
+
     return this.http.post<TypeModel>(
-      environment.apiUrl + '/api/operation_types',
+      environment.apiUrl + this.uri,
       type
     );
   }

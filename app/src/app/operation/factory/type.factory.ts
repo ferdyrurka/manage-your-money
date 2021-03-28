@@ -4,12 +4,8 @@ import {TypeModel} from '../model/type.model';
 
 @Injectable()
 export class TypeFactory {
-  public createFromFormGroup(form: FormGroup): TypeModel {
-    const type = new TypeModel();
-
+  public setFromFormGroup(type: TypeModel, form: FormGroup): void {
     type.name = form.get('name')?.value;
     type.slugs = form.get('slugs')?.value;
-
-    return type;
   }
 }

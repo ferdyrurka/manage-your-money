@@ -20,7 +20,6 @@ class DialogData {
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit, OnDestroy {
-
   public typeForm: FormGroup;
 
   public loading = true;
@@ -83,30 +82,22 @@ export class FormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const type = this.typeFactory.createFromFormGroup(this.typeForm);
+    this.typeFactory.setFromFormGroup(this.data.model, this.typeForm);
 
     this.loading = true;
 
-    this.saveSubscriber = this.typeApi.save(type).subscribe(
+    this.saveSubscriber = this.typeApi.save(this.data.model).subscribe(
       () => {
-        this.snackBar.open('You have created the operation type correctly.', null, {duration: 5000});
-
-        setTimeout(
-          () => {
-            this.modelRef.close();
-          }, 200
-        );
+        setTimeout(() => { this.modelRef.close({successSave: true}); }, 200);
       },
       (err) => {
+        console.error(err);
         this.loading = false;
 
         if (err.status === 422) {
-          this.snackBar.open('This type of operation already exists.', null, {duration: 5000});
-
+          this.errorMessageService.showDuplicate();
           return;
         }
-
-        console.error(err);
 
         this.errorMessageService.show();
       }
