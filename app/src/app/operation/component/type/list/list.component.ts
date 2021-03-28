@@ -81,6 +81,7 @@ export class ListComponent implements OnInit, OnDestroy {
         (data) => {
           if (data && data.successSave) {
             this.refreshData();
+            this.modalSubscription.unsubscribe();
           }
         },
       );
@@ -124,6 +125,11 @@ export class ListComponent implements OnInit, OnDestroy {
   private load(after: string|null, before: string|null): void
   {
     this.loading = true;
+
+    if (this.typeSubscription instanceof Subscription) {
+      this.typeApi.findAll(this.limit, after, before);
+      return;
+    }
 
     this.typeSubscription = this.typeApi
       .findAll(this.limit, after, before)

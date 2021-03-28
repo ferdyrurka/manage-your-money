@@ -3,21 +3,22 @@ import { TypeModel } from '../model/type.model';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Apollo, gql } from 'apollo-angular';
+import {Apollo, gql, QueryRef} from 'apollo-angular';
 import {map} from 'rxjs/operators';
 
 @Injectable()
 export class TypeApi {
-  private findAllQuery;
+  private findAllQuery: QueryRef<any>|null = null;
 
   private readonly uri: string = '/api/operation_types';
 
   constructor(private http: HttpClient, private apollo: Apollo) {}
 
   public findAll(limit: number, after: string|null, before: string|null): Observable<{result: TypeModel[]; totalCount: number}> {
-    this.findAllQuery = this.apollo
-      .watchQuery({
-        query: gql`
+    if (this.findAllQuery === null) {
+      this.findAllQuery = this.apollo
+        .watchQuery({
+          query: gql`
           query FindAll($limit: Int!, $after: String, $before: String) {
            operationTypes(first: $limit, after: $after, before: $before) {
              totalCount
@@ -35,8 +36,11 @@ export class TypeApi {
            }
          }
         `,
-        variables: { limit, after, before }
-      });
+          variables: { limit, after, before }
+        });
+    } else {
+      this.findAllQuery.refetch({ limit, after, before });
+    }
 
     return this.findAllQuery
       .valueChanges
