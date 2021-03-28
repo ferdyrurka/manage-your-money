@@ -23,7 +23,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public typesCount = 0;
 
-  public limit = 5;
+  public limit = 10;
 
   private typeSubscription: Subscription;
 
