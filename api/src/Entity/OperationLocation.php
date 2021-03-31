@@ -14,23 +14,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * TODO: go to only admin
  */
 #[UniqueEntity(fields: ['name'])]
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
-        'post' => ['denormalization_context' => ['groups' => ['user:OperationLocation:write']]],
+        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
+        'post' => ['denormalization_context' => ['groups' => ['admin:OperationLocation:write']]],
     ],
-    graphql: ['item_query', 'collection_query'],
+    graphql: [
+        'item_query',
+        'collection_query',
+    ],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
-        'patch' => ['denormalization_context' => ['groups' => ['user:OperationLocation:write']]],
+        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
+        'put' => ['denormalization_context' => ['groups' => ['admin:OperationLocation:write']]],
     //TODO: delete is change status
     //    'delete',
     ],
-    denormalizationContext: ['groups' => ['user:OperationLocation:write']],
-    normalizationContext: ['groups' => ['user:OperationLocation:read']],
+    denormalizationContext: ['groups' => ['admin:OperationLocation:write']],
+    normalizationContext: ['groups' => ['admin:OperationLocation:read', 'admin:OperationCategory:read']],
 )]
 class OperationLocation
 {
@@ -46,27 +48,27 @@ class OperationLocation
      * @ORM\Column(type="string", length=255, unique=true)
      */
     #[Assert\NotBlank]
-    #[Groups(['user:OperationLocation:read', 'user:OperationLocation:write'])]
+    #[Groups(['admin:OperationLocation:read', 'admin:OperationLocation:write'])]
     private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=OperationCategory::class, mappedBy="locations", fetch="EXTRA_LAZY")
      */
-    #[Groups(['user:OperationLocation:write', 'user:OperationCategory:read'])]
+    #[Groups(['admin:OperationLocation:write', 'admin:OperationCategory:read'])]
     private Collection $operationCategories;
 
     /**
      * @ORM\Column(type="string", length=36, unique=true)
      */
     #[ApiProperty(identifier: true)]
-    #[Groups(['user:OperationLocation:read'])]
+    #[Groups(['admin:OperationLocation:read'])]
     private string $hash;
 
     /**
      * @ORM\Column(type="array")
      */
     #[Assert\NotBlank]
-    #[Groups(['user:OperationLocation:write'])]
+    #[Groups(['admin:OperationLocation:write', 'admin:OperationLocation:read'])]
     private array $slugs = [];
 
     public function __construct()

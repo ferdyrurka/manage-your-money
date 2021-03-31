@@ -12,26 +12,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
- * TODO: go to only admin
  */
 #[UniqueEntity(fields: ['name'])]
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
-        'post' => ['denormalization_context' => ['groups' => ['user:OperationType:write']]],
+        'get' => ['normalization_context' => ['groups' => ['admin:OperationType:read']]],
+        'post' => ['denormalization_context' => ['groups' => ['admin:OperationType:write']]],
     ],
-    graphql: [
-        'item_query' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
-        'collection_query' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
-    ],
+    graphql: ['item_query', 'collection_query',],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:OperationType:read']]],
-        'put' => ['denormalization_context' => ['groups' => ['user:OperationType:write']]],
+        'get' => ['normalization_context' => ['groups' => ['admin:OperationType:read']]],
+        'put' => ['denormalization_context' => ['groups' => ['admin:OperationType:write']]],
         //TODO: delete is change status
         // 'delete',
     ],
-    denormalizationContext: ['groups' => ['user:OperationType:write']],
-    normalizationContext: ['groups' => ['user:OperationType:read']],
+    denormalizationContext: ['groups' => ['admin:OperationType:write']],
+    normalizationContext: ['groups' => ['admin:OperationType:read']],
 )]
 class OperationType
 {
@@ -47,21 +43,21 @@ class OperationType
      * @ORM\Column(type="string", length=64, unique=true)
      */
     #[Assert\NotBlank]
-    #[Groups(['user:OperationType:read', 'user:OperationType:write'])]
+    #[Groups(['admin:OperationType:read', 'admin:OperationType:write'])]
     private string $name;
 
     /**
      * @ORM\Column(type="array")
      */
     #[Assert\NotBlank]
-    #[Groups(['user:OperationType:read', 'user:OperationType:write'])]
+    #[Groups(['admin:OperationType:read', 'admin:OperationType:write'])]
     private array $slugs = [];
 
     /**
      * @ORM\Column(type="string", length=36, unique=true)
      */
     #[ApiProperty(identifier: true)]
-    #[Groups(['user:OperationType:read'])]
+    #[Groups(['admin:OperationType:read'])]
     private string $hash;
 
     public function __construct()

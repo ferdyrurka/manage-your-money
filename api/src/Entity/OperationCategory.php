@@ -14,23 +14,22 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * @ORM\Entity
- * TODO: go to only admin
  */
 #[UniqueEntity(fields: ['name'])]
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
-        'post' => ['denormalization_context' => ['groups' => ['user:OperationCategory:write']]],
+        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
+        'post' => ['denormalization_context' => ['groups' => ['admin:OperationCategory:write']]],
     ],
-    graphql: ['item_query', 'collection_query'],
+    graphql: ['item_query', 'collection_query',],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:OperationCategory:read', 'user:OperationLocation:read']]],
-        'patch' => ['denormalization_context' => ['groups' => ['user:OperationCategory:write']]],
+        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
+        'patch' => ['denormalization_context' => ['groups' => ['admin:OperationCategory:write']]],
         //TODO: delete is change status
         //  'delete',
     ],
-    denormalizationContext: ['groups' => ['user:OperationCategory:write']],
-    normalizationContext: ['groups' => ['user:OperationCategory:read']],
+    denormalizationContext: ['groups' => ['admin:OperationCategory:write']],
+    normalizationContext: ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']],
 )]
 class OperationCategory
 {
@@ -46,20 +45,20 @@ class OperationCategory
      * @ORM\Column(type="string", length=255)
      */
     #[Assert\NotBlank]
-    #[Groups(['user:OperationCategory:read', 'user:OperationCategory:write'])]
+    #[Groups(['admin:OperationCategory:read', 'admin:OperationCategory:write'])]
     private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=OperationLocation::class, inversedBy="operationCategories", fetch="EXTRA_LAZY")
      */
-    #[Groups(['user:OperationCategory:write', 'user:OperationLocation:read'])]
+    #[Groups(['admin:OperationCategory:write', 'admin:OperationLocation:read'])]
     private Collection $locations;
 
     /**
      * @ORM\Column(type="string", length=36, unique=true)
      */
     #[ApiProperty(identifier: true)]
-    #[Groups(['user:OperationCategory:read'])]
+    #[Groups(['admin:OperationCategory:read'])]
     private string $hash;
 
     public function __construct()
