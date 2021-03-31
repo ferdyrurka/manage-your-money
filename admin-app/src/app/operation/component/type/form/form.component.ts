@@ -1,42 +1,38 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MyErrorStateMatcher} from '../../../../shared/service/my-error-state.matcher';
 import {TypeApi} from '../../../api/type.api';
 import {TypeFactory} from '../../../factory/type.factory';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Subscription} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ErrorMessageService} from '../../../../shared/service/error-message.service';
 import {TypeModel} from '../../../model/type.model';
 import {NullTypeModel} from '../../../model/null-type.model';
-
-class DialogData {
-  public model: TypeModel | null = null;
-}
+import {DialogData} from '../../shared/dialog-data';
+import {SlugFormBuilder} from '../../../service/form-builder/slug.form-builder';
+import {SaveErrorService} from '../../../../shared/service/save-error.service';
 
 @Component({
-  selector: 'app-type-component-create-form',
+  selector: 'app-operation-component-type-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit, OnDestroy {
+export class FormComponent implements OnInit {
   public typeForm: FormGroup;
 
   public loading = true;
 
-  private saveSubscriber: Subscription;
-
   constructor(
     public matcher: MyErrorStateMatcher,
+    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<TypeModel>,
     private typeApi: TypeApi,
     private typeFactory: TypeFactory,
     private snackBar: MatSnackBar,
     private modelRef: MatDialogRef<FormComponent>,
-    private errorMessageService: ErrorMessageService,
-    @Inject(MAT_DIALOG_DATA) private readonly data: DialogData,
+    private saveErrorService: SaveErrorService,
   ) {
     if (this.data == null) {
-      this.data = new DialogData();
+      this.data = new DialogData<TypeModel>();
       this.data.model = new NullTypeModel();
     }
   }
@@ -47,22 +43,12 @@ export class FormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.maxLength(64)
       ]),
-      slugs: new FormArray(
-        [], []
-      ),
+      slugs: new FormArray([], []),
     });
 
-    this.data.model.slugs.forEach((slug: any) => {
-      this.addItem(slug.slug);
-    });
+    this.data.model.slugs.forEach((slug: { slug: string }) => this.addItem(slug.slug));
 
     this.loading = false;
-  }
-
-  ngOnDestroy(): void {
-    if (this.saveSubscriber) {
-      this.saveSubscriber.unsubscribe();
-    }
   }
 
   public addItem(slug: string = ''): void {
@@ -71,7 +57,15 @@ export class FormComponent implements OnInit, OnDestroy {
     items.markAllAsTouched();
 
     if (items.valid) {
-      items.push(this.createItem(slug));
+      items.push(SlugFormBuilder.create(slug));
+    }
+  }
+
+  public removeItem(item: number): void {
+    const items: FormArray = this.typeForm.get('slugs') as FormArray;
+
+    if (items.length > 1) {
+      items.removeAt(item);
     }
   }
 
@@ -86,30 +80,14 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this.loading = true;
 
-    this.saveSubscriber = this.typeApi.save(this.data.model).subscribe(
+    this.typeApi.save(this.data.model).subscribe(
       () => {
         setTimeout(() => { this.modelRef.close({successSave: true}); }, 200);
       },
       (err) => {
-        console.error(err);
         this.loading = false;
-
-        if (err.status === 422) {
-          this.errorMessageService.showDuplicate();
-          return;
-        }
-
-        this.errorMessageService.show();
+        this.saveErrorService.catch(err);
       }
     );
-  }
-
-  private createItem(slug: string): FormGroup {
-    return new FormGroup({
-      slug: new FormControl(slug, [
-        Validators.required,
-        Validators.maxLength(256),
-      ])
-    });
   }
 }

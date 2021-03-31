@@ -1,14 +1,15 @@
-import {Component, EventEmitter, OnDestroy, Output} from '@angular/core';
-import { MatDialog} from '@angular/material/dialog';
-import { FormComponent} from '../../../component/type/form/form.component';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {FormComponent} from '../../../component/location/form/form.component';
 
 @Component({
-  selector: 'app-operation-type-index',
+  selector: 'app-operation-location-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent {
+
   @Output() public eventEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
@@ -29,7 +30,7 @@ export class IndexComponent {
       .subscribe(
         (event) => {
           if (event && event.successSave) {
-            this.eventEmitter.emit('refresh:operation:type:list');
+            this.eventEmitter.emit('refresh:operation:location:list');
           }
         }
       );

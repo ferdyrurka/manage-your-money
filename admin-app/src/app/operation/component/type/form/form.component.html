@@ -4,7 +4,9 @@
 
 <div [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
   <div class="small-form-wrapper" [formGroup]="typeForm">
-    <h1>Create operation type</h1>
+    <h1 *ngIf="!data.model.id">Create operation type</h1>
+
+    <h1 *ngIf="data.model.id">Update operation type</h1>
 
     <mat-form-field>
       <mat-label>Name</mat-label>
@@ -22,22 +24,26 @@
     </mat-form-field>
 
     <div formArrayName="slugs"
-         *ngFor="let item of typeForm.get('slugs')['controls']; let i = index;">
+         *ngFor="let item of typeForm.get('slugs')['controls']; let i = index;" class="d-flex">
 
-      <mat-form-field [formGroupName]="i">
-        <mat-label>Slug</mat-label>
+        <mat-form-field [formGroupName]="i">
+          <mat-label>Slug</mat-label>
 
-        <input type="text" matInput [formControl]="item.get('slug')" [errorStateMatcher]="matcher"
-               placeholder="Eg. Cash withdrawal, Card payment, Bank transfer">
+          <input type="text" matInput [formControl]="item.get('slug')" [errorStateMatcher]="matcher"
+                 placeholder="Eg. Cash withdrawal, Card payment, Bank transfer">
 
-        <mat-error *ngIf="item.get('slug').hasError('required')">
-          Field name is required field
-        </mat-error>
+          <button mat-button matSuffix mat-icon-button aria-label="Remove item" [disabled]="loading" (click)="removeItem(i);">
+            <mat-icon>remove</mat-icon>
+          </button>
 
-        <mat-error *ngIf="item.get('slug').hasError('maxlength')">
-          Maximum length for name field is 256 chars
-        </mat-error>
-      </mat-form-field>
+          <mat-error *ngIf="item.get('slug').hasError('required')">
+            Field name is required field
+          </mat-error>
+
+          <mat-error *ngIf="item.get('slug').hasError('maxlength')">
+            Maximum length for name field is 256 chars
+          </mat-error>
+        </mat-form-field>
     </div>
 
     <div>

@@ -1,0 +1,38 @@
+<div [formGroup]="form">
+  <div formArrayName="categories"
+       *ngFor="let item of form.get('categories')['controls']; let i = index;" class="d-flex">
+
+    <mat-form-field [formGroupName]="i">
+      <mat-label>Category</mat-label>
+
+      <input type="text"
+             placeholder="Eg. fast foods, supermarkets"
+             aria-label="Category"
+             matInput
+             [formControl]="item.get('name')"
+             [errorStateMatcher]="matcher"
+             [matAutocomplete]="auto">
+
+      <button mat-button matSuffix mat-icon-button aria-label="Remove item" (click)="removeItem(i, 'categories');">
+        <mat-icon>remove</mat-icon>
+      </button>
+
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions[i] | async" [value]="option.name" (click)="item.get('id').setValue(option.id)">
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+
+      <mat-error *ngIf="item.get('name').hasError('required')">
+        Field category is required field
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-icon-button aria-label="Add item" (click)="addItem();">
+      <mat-icon>add_task</mat-icon>
+    </button>
+  </div>
+</div>
+

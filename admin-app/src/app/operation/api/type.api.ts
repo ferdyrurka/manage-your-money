@@ -30,9 +30,6 @@ export class TypeApi {
                }
                cursor
              }
-             pageInfo {
-               hasNextPage
-             }
            }
          }
         `,

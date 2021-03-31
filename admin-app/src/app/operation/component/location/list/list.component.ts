@@ -1,37 +1,37 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit} from '@angular/core';
-import {PageEvent} from '@angular/material/paginator';
 import {TypeModel} from '../../../model/type.model';
 import {Subscription} from 'rxjs';
+import {PageEvent} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
-import {TypeApi} from '../../../api/type.api';
 import {ErrorMessageService} from '../../../../shared/service/error-message.service';
-import {FormComponent} from '../form/form.component';
+import {LocationModel} from '../../../model/location.model';
 import {PaginatorGraphqlService} from '../../../../shared/service/paginator-graphql.service';
+import {LocationApi} from '../../../api/location.api';
+import {FormComponent} from '../form/form.component';
 import {PageSizeOptions} from '../../../../shared/paginator/page-size-options';
 
 @Component({
-  selector: 'app-operation-component-type-list',
+  selector: 'app-operation-component-location-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit, OnDestroy {
+
   @Input() public eventEmitter: EventEmitter<string>;
 
   public readonly displayedColumns = ['id', 'name', 'update'];
 
   public loading = true;
 
-  public types: TypeModel[] = [];
-
-  public typesCount = 0;
-
-  public limit = 10;
+  public locations: LocationModel[] = [];
 
   public pageSizeOptions: number[] = [];
 
-  private typeSubscription: Subscription;
+  public locationsCount = 0;
 
-  private modalSubscription: Subscription;
+  public limit = 10;
+
+  private locationsSubscription: Subscription;
 
   private eventEmitterSubscription: Subscription;
 
@@ -39,8 +39,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   constructor(
     private modal: MatDialog,
-    private typeApi: TypeApi,
-    private errorMessageService: ErrorMessageService
+    private locationApi: LocationApi,
+    private errorMessageService: ErrorMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -48,27 +48,23 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.eventEmitterSubscription = this.eventEmitter
       .subscribe((event) => {
-        if (event === 'refresh:operation:type:list') {
-          this.refreshData();
+          if (event === 'refresh:operation:location:list') {
+            this.refreshData();
+          }
         }
-      }
-    );
+      );
   }
 
   ngOnDestroy() {
-    if (this.typeSubscription) {
-      this.typeSubscription.unsubscribe();
-    }
-
-    if (this.modalSubscription) {
-      this.modalSubscription.unsubscribe();
+    if (this.locationsSubscription) {
+      this.locationsSubscription.unsubscribe();
     }
 
     this.eventEmitterSubscription.unsubscribe();
   }
 
   public openUpdateModal(model: TypeModel): void {
-    this.modalSubscription = this.modal
+    this.modal
       .open(
         FormComponent,
         {
@@ -85,7 +81,6 @@ export class ListComponent implements OnInit, OnDestroy {
         (data) => {
           if (data && data.successSave) {
             this.refreshData();
-            this.modalSubscription.unsubscribe();
           }
         },
       );
@@ -107,33 +102,33 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private loadNewData(): void
   {
-    const paginatorData = PaginatorGraphqlService.getAfterBeforeByPageEvent(this.pageEvent, this.types);
+    const paginatorData = PaginatorGraphqlService.getAfterBeforeByPageEvent(this.pageEvent, this.locations);
 
     this.load(paginatorData.after, paginatorData.before);
   }
 
   private refreshData(): void
   {
-    this.typeApi.findAllRefresh();
+    this.locationApi.findAllRefresh();
   }
 
-  private load(after: string|null, before: string|null): void
-  {
+  private load(after: string|null, before: string|null): void {
     this.loading = true;
 
-    if (this.typeSubscription instanceof Subscription) {
-      this.typeApi.findAll(this.limit, after, before);
+    if (this.locationsSubscription instanceof Subscription) {
+      console.log('findAll');
+      this.locationApi.findAll(this.limit, after, before);
       return;
     }
 
-    this.typeSubscription = this.typeApi
+    this.locationsSubscription = this.locationApi
       .findAll(this.limit, after, before)
       .subscribe(
         (data) => {
-          this.types = data.result;
-          this.typesCount = data.totalCount;
+          this.locations = data.result;
+          this.locationsCount = data.totalCount;
 
-          if (this.typesCount > PageSizeOptions.MIN_COUNT) {
+          if (this.locationsCount > PageSizeOptions.MIN_COUNT) {
             this.pageSizeOptions = PageSizeOptions.BASE;
           }
 
@@ -147,4 +142,5 @@ export class ListComponent implements OnInit, OnDestroy {
         },
       );
   }
+
 }

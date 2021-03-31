@@ -70,3 +70,14 @@ body {
   justify-content: center;
   width: 100%;
 }
+
+.small-form-wrapper {
+  margin: 0 10px 0 10px;
+
+  width: 100%;
+  max-width: 640px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}

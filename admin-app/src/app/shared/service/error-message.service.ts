@@ -9,7 +9,7 @@ export class ErrorMessageService {
 
   public showDuplicate(): void
   {
-    this.snackBar.open('This type of operation already exists.', null, {duration: 5000});
+    this.snackBar.open('This entity already exists.', null, {duration: 5000});
   }
 
   public show(): void

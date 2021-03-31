@@ -1,0 +1,30 @@
+<div [formGroup]="form">
+  <div formArrayName="slugs"
+       *ngFor="let item of form.get('slugs')['controls']; let i = index;" class="d-flex">
+
+    <mat-form-field [formGroupName]="i">
+      <mat-label>Slug</mat-label>
+
+      <input type="text" matInput [formControl]="item.get('slug')" [errorStateMatcher]="matcher"
+             placeholder="Eg. lidl, biedronka, kfc">
+
+      <button mat-button matSuffix mat-icon-button aria-label="Remove item" (click)="removeItem(i, 'slugs');">
+        <mat-icon>remove</mat-icon>
+      </button>
+
+      <mat-error *ngIf="item.get('slug').hasError('required')">
+        Field name is required field
+      </mat-error>
+
+      <mat-error *ngIf="item.get('slug').hasError('maxlength')">
+        Maximum length for name field is 256 chars
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-icon-button aria-label="Add item" (click)="addItem();">
+      <mat-icon>add_task</mat-icon>
+    </button>
+  </div>
+</div>

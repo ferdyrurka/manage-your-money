@@ -1,0 +1,34 @@
+<div class="loading">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
+
+<div [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
+  <div class="small-form-wrapper" [formGroup]="typeForm">
+    <h1 *ngIf="!data.model.id">Create operation location</h1>
+
+    <h1 *ngIf="data.model.id">Update operation location</h1>
+
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+
+      <input type="text" matInput [formControl]="typeForm.get('name')" [errorStateMatcher]="matcher"
+             placeholder="Eg. KFC, Burger King">
+
+      <mat-error *ngIf="typeForm.get('name').hasError('required')">
+        Field name is required field
+      </mat-error>
+
+      <mat-error *ngIf="typeForm.get('name').hasError('maxlength')">
+        Maximum length for name field is 64 chars
+      </mat-error>
+    </mat-form-field>
+
+    <app-operation-component-shared-slugs-form [form]="typeForm" [model]="data.model"></app-operation-component-shared-slugs-form>
+
+    <app-operation-component-location-categories-form [form]="typeForm" [model]="data.model"></app-operation-component-location-categories-form>
+
+    <div class="mt-1">
+      <button mat-raised-button color="primary" [disabled]="loading" (click)="save();">Save</button>
+    </div>
+  </div>
+</div>
