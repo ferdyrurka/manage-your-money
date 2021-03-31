@@ -128,9 +128,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.locations = data.result;
           this.locationsCount = data.totalCount;
 
-          if (this.locationsCount > PageSizeOptions.MIN_COUNT) {
-            this.pageSizeOptions = PageSizeOptions.BASE;
-          }
+          this.pageSizeOptions = PageSizeOptions.getSizeOptions(this.locationsCount);
 
           this.loading = false;
         },
