@@ -24,7 +24,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
     graphql: ['item_query', 'collection_query',],
     itemOperations: [
         'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
-        'patch' => ['denormalization_context' => ['groups' => ['admin:OperationCategory:write']]],
+        'put' => ['denormalization_context' => ['groups' => ['admin:OperationCategory:write']]],
         //TODO: delete is change status
         //  'delete',
     ],

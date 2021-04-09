@@ -1,46 +1,46 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit} from '@angular/core';
-import {PageEvent} from '@angular/material/paginator';
-import {TypeModel} from '../../../model/type.model';
 import {Subscription} from 'rxjs';
+import {PageEvent} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
-import {TypeApi} from '../../../api/type.api';
 import {ErrorMessageService} from '../../../../shared/service/error-message.service';
+import {TypeModel} from '../../../model/type.model';
 import {FormComponent} from '../form/form.component';
 import {PaginatorGraphqlService} from '../../../../shared/service/paginator-graphql.service';
 import {PageSizeOptions} from '../../../../shared/paginator/page-size-options';
+import {CategoryApi} from '../../../api/category.api';
+import {CategoryModel} from '../../../model/category.model';
 
 @Component({
-  selector: 'app-operation-component-type-list',
+  selector: 'app-operation-component-category-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit, OnDestroy {
+
   @Input() public eventEmitter: EventEmitter<string>;
 
   public readonly displayedColumns = ['id', 'name', 'update'];
 
   public loading = true;
 
-  public types: TypeModel[] = [];
-
-  public typesCount = 0;
-
-  public limit = 10;
+  public categories: CategoryModel[] = [];
 
   public pageSizeOptions: number[] = [];
 
-  private typeSubscription: Subscription;
+  public categoriesCount = 0;
 
-  private modalSubscription: Subscription;
+  public limit = 10;
 
-  private eventEmitterSubscription: Subscription;
+  private categoriesSubscription: Subscription|null = null;
+
+  private eventEmitterSubscription: Subscription|null = null;
 
   private pageEvent: PageEvent = null;
 
   constructor(
     private modal: MatDialog,
-    private typeApi: TypeApi,
-    private errorMessageService: ErrorMessageService
+    private categoryApi: CategoryApi,
+    private errorMessageService: ErrorMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -48,27 +48,20 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.eventEmitterSubscription = this.eventEmitter
       .subscribe((event) => {
-        if (event === 'refresh:operation:type:list') {
-          this.refreshData();
+          if (event === 'refresh:operation:category:list') {
+            this.refreshData();
+          }
         }
-      }
-    );
+      );
   }
 
   ngOnDestroy() {
-    if (this.typeSubscription) {
-      this.typeSubscription.unsubscribe();
-    }
-
-    if (this.modalSubscription) {
-      this.modalSubscription.unsubscribe();
-    }
-
-    this.eventEmitterSubscription.unsubscribe();
+    this.categoriesSubscription?.unsubscribe();
+    this.eventEmitterSubscription?.unsubscribe();
   }
 
   public openUpdateModal(model: TypeModel): void {
-    this.modalSubscription = this.modal
+    this.modal
       .open(
         FormComponent,
         {
@@ -85,7 +78,6 @@ export class ListComponent implements OnInit, OnDestroy {
         (data) => {
           if (data && data.successSave) {
             this.refreshData();
-            this.modalSubscription.unsubscribe();
           }
         },
       );
@@ -107,33 +99,32 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private loadNewData(): void
   {
-    const paginatorData = PaginatorGraphqlService.getAfterAndBeforeByPageEvent(this.pageEvent, this.types);
+    const paginatorData = PaginatorGraphqlService.getAfterAndBeforeByPageEvent(this.pageEvent, this.categories);
 
     this.load(paginatorData.after, paginatorData.before);
   }
 
   private refreshData(): void
   {
-    this.typeApi.findAllRefresh();
+    this.categoryApi.findAllRefresh();
   }
 
-  private load(after: string|null, before: string|null): void
-  {
+  private load(after: string|null, before: string|null): void {
     this.loading = true;
 
-    if (this.typeSubscription instanceof Subscription) {
-      this.typeApi.findAll(this.limit, after, before);
+    if (this.categoriesSubscription instanceof Subscription) {
+      this.categoryApi.findAll(this.limit, after, before);
       return;
     }
 
-    this.typeSubscription = this.typeApi
+    this.categoriesSubscription = this.categoryApi
       .findAll(this.limit, after, before)
       .subscribe(
         (data) => {
-          this.types = data.result;
-          this.typesCount = data.totalCount;
+          this.categories = data.result;
+          this.categoriesCount = data.totalCount;
 
-          this.pageSizeOptions = PageSizeOptions.getSizeOptions(this.typesCount);
+          this.pageSizeOptions = PageSizeOptions.getSizeOptions(this.categoriesCount);
 
           this.loading = false;
         },

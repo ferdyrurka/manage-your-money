@@ -15,6 +15,34 @@ export class LocationApi {
 
   constructor(private http: HttpClient, private apollo: Apollo) {}
 
+  public findAllBasicData(): Observable<{ result: LocationModel[]; }> {
+    return this.apollo
+      .query({
+        query: gql`
+          query findAllBasicData {
+           operationLocations {
+             edges {
+               node {
+                id
+                name
+               }
+             }
+           }
+         }
+        `,
+      })
+      .pipe(
+        map((result: any) => result.data.operationLocations)
+      )
+      .pipe(
+        map(
+          (result: any) => {
+            return { result: this.findAllToResultModels(result.edges) };
+          }
+        )
+      );
+  }
+
   public findAll(limit: number, after: string|null, before: string|null): Observable<{result: LocationModel[]; totalCount: number}> {
     if (this.findAllQuery === null) {
       this.findAllQuery = this.apollo
@@ -84,6 +112,7 @@ export class LocationApi {
     );
   }
 
+  /*TODO: go to factory*/
   private findAllToResultModels(edges: []): LocationModel[] {
     const result: LocationModel[] = [];
 
@@ -96,14 +125,16 @@ export class LocationApi {
       model.cursor = location.cursor;
       model.categoriesModelsCollection = [];
 
-      location.node.operationCategories.edges.forEach((category: any) => {
-        const categoryModel = new CategoryModel();
+      if (location.node.operationCategories) {
+        location.node.operationCategories.edges.forEach((category: any) => {
+          const categoryModel = new CategoryModel();
 
-        categoryModel.id = category.node.id;
-        categoryModel.name = category.node.name;
+          categoryModel.id = category.node.id;
+          categoryModel.name = category.node.name;
 
-        model.categoriesModelsCollection.push(categoryModel);
-      });
+          model.categoriesModelsCollection.push(categoryModel);
+        });
+      }
 
       result.push(model);
     });

@@ -5,7 +5,6 @@ export class CategoryFormBuilder {
   static create(category: CategoryModel): FormGroup {
     return new FormGroup({
       name: new FormControl(category.name, [
-        Validators.required,
         Validators.maxLength(256),
       ]),
       id: new FormControl(category.id)

@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="top-nav">
+    <div>
+      <button mat-icon-button aria-label="Create" (click)="openCreateModal()">
+        <mat-icon>create</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <app-operation-component-category-list [eventEmitter]="eventEmitter"></app-operation-component-category-list>
+</div>

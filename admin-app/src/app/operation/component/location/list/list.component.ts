@@ -31,9 +31,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public limit = 10;
 
-  private locationsSubscription: Subscription;
+  private locationsSubscription: Subscription|null = null;
 
-  private eventEmitterSubscription: Subscription;
+  private eventEmitterSubscription: Subscription|null = null;
 
   private pageEvent: PageEvent = null;
 
@@ -56,14 +56,11 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.locationsSubscription) {
-      this.locationsSubscription.unsubscribe();
-    }
-
-    this.eventEmitterSubscription.unsubscribe();
+    this.locationsSubscription?.unsubscribe();
+    this.eventEmitterSubscription?.unsubscribe();
   }
 
-  public openUpdateModal(model: TypeModel): void {
+  public openUpdateModal(model: LocationModel): void {
     this.modal
       .open(
         FormComponent,
@@ -102,7 +99,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private loadNewData(): void
   {
-    const paginatorData = PaginatorGraphqlService.getAfterBeforeByPageEvent(this.pageEvent, this.locations);
+    const paginatorData = PaginatorGraphqlService.getAfterAndBeforeByPageEvent(this.pageEvent, this.locations);
 
     this.load(paginatorData.after, paginatorData.before);
   }
@@ -116,7 +113,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     if (this.locationsSubscription instanceof Subscription) {
-      console.log('findAll');
       this.locationApi.findAll(this.limit, after, before);
       return;
     }
@@ -140,5 +136,4 @@ export class ListComponent implements OnInit, OnDestroy {
         },
       );
   }
-
 }

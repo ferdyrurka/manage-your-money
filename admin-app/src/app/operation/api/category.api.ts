@@ -38,9 +38,7 @@ export class CategoryApi {
       .pipe(
         map(
           (result: any) => {
-            return {
-              result: this.findAllToResultModels(result.edges),
-            };
+            return { result: this.findAllToResultModels(result.edges) };
           }
         )
       );
@@ -58,8 +56,7 @@ export class CategoryApi {
                node {
                 id
                 name
-                slugs
-                operationCategories {
+                locations {
                   edges {
                     node {
                       id
@@ -114,26 +111,26 @@ export class CategoryApi {
     );
   }
 
+  /*TODO: go to factory*/
   private findAllToResultModels(edges: []): CategoryModel[] {
     const result: CategoryModel[] = [];
 
-    edges.forEach((location: any) => {
+    edges.forEach((category: any) => {
       const model = new CategoryModel();
 
-      model.id = location.node.id;
-      model.name = location.node.name;
-      model.slugs = location.node?.slugs;
-      model.cursor = location?.cursor;
-      model.locations = [];
+      model.id = category.node.id;
+      model.name = category.node.name;
+      model.cursor = category?.cursor;
+      model.locationsModelsCollection = [];
 
-      if (location.node.operationCategories) {
-        location.node.operationCategories.edges.forEach((category: any) => {
+      if (category.node.locations) {
+        category.node.locations.edges.forEach((location: any) => {
           const locationModel = new LocationModel();
 
-          locationModel.id = category.node.id;
-          locationModel.name = category.node.name;
+          locationModel.id = location.node.id;
+          locationModel.name = location.node.name;
 
-          model.locations.push(locationModel);
+          model.locationsModelsCollection.push(locationModel);
         });
       }
 

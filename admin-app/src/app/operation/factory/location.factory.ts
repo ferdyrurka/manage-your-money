@@ -4,16 +4,18 @@ import {LocationModel} from '../model/location.model';
 
 @Injectable()
 export class LocationFactory {
-  public setApiModelFromFormGroup(type: LocationModel, form: FormGroup): void {
-    type.name = form.get('name')?.value;
-    type.slugs = form.get('slugs')?.value;
-    type.operationCategories = [];
+  public setApiModelFromFormGroup(model: LocationModel, form: FormGroup): void {
+    model.name = form.get('name')?.value;
+    model.slugs = form.get('slugs')?.value;
+    model.operationCategories = [];
 
     const categories = form.get('categories')?.value;
 
     if (categories.length > 0) {
       categories.forEach((category: { name: string, id: string }) => {
-        type.operationCategories.push(category.id);
+        if (category.id) {
+          model.operationCategories.push(category.id);
+        }
       });
     }
   }

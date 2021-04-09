@@ -84,7 +84,11 @@ export class CategoriesFormComponent implements OnInit {
 
     if (items.length > 1) {
       items.removeAt(item);
+      return;
     }
+
+    items.removeAt(item);
+    this.addItem(null);
   }
 
   private getItems(name: string): FormArray {

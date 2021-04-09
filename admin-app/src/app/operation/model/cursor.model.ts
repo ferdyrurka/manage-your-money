@@ -1,3 +1,3 @@
-export class CursorModel {
+export abstract class CursorModel {
   public cursor: string;
 }
