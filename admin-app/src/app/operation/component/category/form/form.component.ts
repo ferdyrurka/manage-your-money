@@ -3,12 +3,10 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MyErrorStateMatcher} from '../../../../shared/service/my-error-state.matcher';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DialogData} from '../../shared/dialog-data';
-import {LocationFactory} from '../../../factory/location.factory';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SaveErrorService} from '../../../../shared/service/save-error.service';
 import {CategoryModel} from '../../../model/category.model';
 import {CategoryApi} from '../../../api/category.api';
-import {NullCategoryModel} from '../../../model/null-category.model';
 import {CategoryFactory} from '../../../factory/category.factory';
 
 @Component({
@@ -33,7 +31,7 @@ export class FormComponent implements OnInit {
   ) {
     if (this.data == null) {
       this.data = new DialogData<CategoryModel>();
-      this.data.model = new NullCategoryModel();
+      this.data.model = categoryFactory.create();
     }
   }
 

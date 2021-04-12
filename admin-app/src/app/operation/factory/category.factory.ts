@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {CategoryModel} from '../model/category.model';
+import {LocationModel} from '../model/location.model';
 
 @Injectable()
 export class CategoryFactory {
@@ -17,5 +18,41 @@ export class CategoryFactory {
         }
       });
     }
+  }
+
+  public create(): CategoryModel {
+    const category = new CategoryModel();
+    category.name = '';
+    category.locations = [];
+
+    return category;
+  }
+
+  public findAllToResultModels(edges: []): CategoryModel[] {
+    const result: CategoryModel[] = [];
+
+    edges.forEach((category: any) => {
+      const model = new CategoryModel();
+
+      model.id = category.node.id;
+      model.name = category.node.name;
+      model.cursor = category?.cursor;
+      model.locationsModelsCollection = [];
+
+      if (category.node.locations) {
+        category.node.locations.edges.forEach((location: any) => {
+          const locationModel = new LocationModel();
+
+          locationModel.id = location.node.id;
+          locationModel.name = location.node.name;
+
+          model.locationsModelsCollection.push(locationModel);
+        });
+      }
+
+      result.push(model);
+    });
+
+    return result;
   }
 }

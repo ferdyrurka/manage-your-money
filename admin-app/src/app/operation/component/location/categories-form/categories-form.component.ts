@@ -4,11 +4,11 @@ import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {CategoryModel} from '../../../model/category.model';
 import {CategoryFormBuilder} from '../../../service/form-builder/category.form-builder';
 import {MyErrorStateMatcher} from '../../../../shared/service/my-error-state.matcher';
-import {NullCategoryModel} from '../../../model/null-category.model';
 import {CategoryApi} from '../../../api/category.api';
 import {CategoryNameLikeFilter} from '../../../service/autocomplete/filter/category-name-like.filter';
 import {Observable, Subscription} from 'rxjs';
 import {ErrorMessageService} from '../../../../shared/service/error-message.service';
+import {CategoryFactory} from '../../../factory/category.factory';
 
 @Component({
   selector: 'app-operation-component-location-categories-form',
@@ -31,6 +31,7 @@ export class CategoriesFormComponent implements OnInit {
   constructor(
     public matcher: MyErrorStateMatcher,
     private categoryApi: CategoryApi,
+    private categoryFactory: CategoryFactory,
     private errorMessageService: ErrorMessageService,
   ) { }
 
@@ -64,19 +65,21 @@ export class CategoriesFormComponent implements OnInit {
   public addItem(category: CategoryModel|null = null): void {
     const items = this.getItems('categories');
 
+    if (items.invalid) {
+      return;
+    }
+
     if (!category) {
-      category = new NullCategoryModel();
+      category = this.categoryFactory.create();
     }
 
-    if (items.valid) {
-      const form = CategoryFormBuilder.create(category);
+    const form = CategoryFormBuilder.create(category);
 
-      this.filteredOptions.push(
-        this.categoryNameLikeFilter.handle(form.get('name') as FormControl)
-      );
+    this.filteredOptions.push(
+      this.categoryNameLikeFilter.handle(form.get('name') as FormControl)
+    );
 
-      items.push(form);
-    }
+    items.push(form);
   }
 
   public removeItem(item: number, name: string): void {

@@ -6,6 +6,7 @@ import {environment} from '../../../environments/environment';
 import {LocationModel} from '../model/location.model';
 import {CategoryModel} from '../model/category.model';
 import {Injectable} from '@angular/core';
+import {LocationFactory} from '../factory/location.factory';
 
 @Injectable()
 export class LocationApi {
@@ -13,7 +14,7 @@ export class LocationApi {
 
   private readonly uri: string = '/api/operation_locations';
 
-  constructor(private http: HttpClient, private apollo: Apollo) {}
+  constructor(private http: HttpClient, private apollo: Apollo, private factory: LocationFactory) {}
 
   public findAllBasicData(): Observable<{ result: LocationModel[]; }> {
     return this.apollo
@@ -37,7 +38,7 @@ export class LocationApi {
       .pipe(
         map(
           (result: any) => {
-            return { result: this.findAllToResultModels(result.edges) };
+            return { result: this.factory.findAllToResultModels(result.edges) };
           }
         )
       );
@@ -86,7 +87,7 @@ export class LocationApi {
           (result: any) => {
             return {
               totalCount: result.totalCount,
-              result: this.findAllToResultModels(result.edges),
+              result: this.factory.findAllToResultModels(result.edges),
             };
           }
         )
@@ -110,35 +111,5 @@ export class LocationApi {
       environment.apiUrl + this.uri,
       location
     );
-  }
-
-  /*TODO: go to factory*/
-  private findAllToResultModels(edges: []): LocationModel[] {
-    const result: LocationModel[] = [];
-
-    edges.forEach((location: any) => {
-      const model = new LocationModel();
-
-      model.id = location.node.id;
-      model.name = location.node.name;
-      model.slugs = location.node.slugs;
-      model.cursor = location.cursor;
-      model.categoriesModelsCollection = [];
-
-      if (location.node.operationCategories) {
-        location.node.operationCategories.edges.forEach((category: any) => {
-          const categoryModel = new CategoryModel();
-
-          categoryModel.id = category.node.id;
-          categoryModel.name = category.node.name;
-
-          model.categoriesModelsCollection.push(categoryModel);
-        });
-      }
-
-      result.push(model);
-    });
-
-    return result;
   }
 }

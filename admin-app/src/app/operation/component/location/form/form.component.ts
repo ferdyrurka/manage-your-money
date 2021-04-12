@@ -4,7 +4,6 @@ import {MyErrorStateMatcher} from '../../../../shared/service/my-error-state.mat
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DialogData} from '../../shared/dialog-data';
-import {NullLocationModel} from '../../../model/null-location.model';
 import {LocationModel} from '../../../model/location.model';
 import {LocationApi} from '../../../api/location.api';
 import {LocationFactory} from '../../../factory/location.factory';
@@ -32,7 +31,7 @@ export class FormComponent implements OnInit {
   ) {
     if (this.data == null) {
       this.data = new DialogData<LocationModel>();
-      this.data.model = new NullLocationModel();
+      this.data.model = locationFactory.create();
     }
   }
 

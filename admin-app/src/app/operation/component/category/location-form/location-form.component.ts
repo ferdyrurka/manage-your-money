@@ -8,7 +8,7 @@ import {ErrorMessageService} from '../../../../shared/service/error-message.serv
 import {LocationApi} from '../../../api/location.api';
 import {LocationFormBuilder} from '../../../service/form-builder/location.form-builder';
 import {LocationNameLikeFilter} from '../../../service/autocomplete/filter/location-name-like.filter';
-import {NullLocationModel} from '../../../model/null-location.model';
+import {LocationFactory} from '../../../factory/location.factory';
 
 @Component({
   selector: 'app-operation-component-category-location-form',
@@ -31,6 +31,7 @@ export class LocationFormComponent implements OnInit {
   constructor(
     public matcher: MyErrorStateMatcher,
     private locationApi: LocationApi,
+    private locationFactory: LocationFactory,
     private errorMessageService: ErrorMessageService,
   ) { }
 
@@ -64,19 +65,21 @@ export class LocationFormComponent implements OnInit {
   public addItem(location: LocationModel|null = null): void {
     const items = this.getItems('locations');
 
+    if (items.invalid) {
+      return;
+    }
+
     if (!location) {
-      location = new NullLocationModel();
+      location = this.locationFactory.create();
     }
 
-    if (items.valid) {
-      const form = LocationFormBuilder.create(location);
+    const form = LocationFormBuilder.create(location);
 
-      this.filteredOptions.push(
-        this.locationNameLikeFilter.handle(form.get('name') as FormControl)
-      );
+    this.filteredOptions.push(
+      this.locationNameLikeFilter.handle(form.get('name') as FormControl)
+    );
 
-      items.push(form);
-    }
+    items.push(form);
   }
 
   public removeItem(item: number, name: string): void {

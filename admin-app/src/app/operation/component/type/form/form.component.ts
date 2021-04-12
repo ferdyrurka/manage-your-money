@@ -5,9 +5,7 @@ import {TypeApi} from '../../../api/type.api';
 import {TypeFactory} from '../../../factory/type.factory';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ErrorMessageService} from '../../../../shared/service/error-message.service';
 import {TypeModel} from '../../../model/type.model';
-import {NullTypeModel} from '../../../model/null-type.model';
 import {DialogData} from '../../shared/dialog-data';
 import {SlugFormBuilder} from '../../../service/form-builder/slug.form-builder';
 import {SaveErrorService} from '../../../../shared/service/save-error.service';
@@ -33,7 +31,7 @@ export class FormComponent implements OnInit {
   ) {
     if (this.data == null) {
       this.data = new DialogData<TypeModel>();
-      this.data.model = new NullTypeModel();
+      this.data.model = typeFactory.create();
     }
   }
 

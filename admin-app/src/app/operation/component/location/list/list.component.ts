@@ -67,6 +67,7 @@ export class ListComponent implements OnInit, OnDestroy {
         {
           minWidth: '320px',
           maxWidth: '640px',
+          maxHeight: '99vh',
           width: '100%',
           data: {
             model,

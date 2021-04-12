@@ -22,6 +22,7 @@ export class IndexComponent {
         {
           minWidth: '320px',
           maxWidth: '640px',
+          maxHeight: '99vh',
           width: '100%',
         }
       )

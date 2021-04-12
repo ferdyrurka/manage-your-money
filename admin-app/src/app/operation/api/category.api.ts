@@ -2,10 +2,10 @@ import {Observable} from 'rxjs';
 import {CategoryModel} from '../model/category.model';
 import {Apollo, gql, QueryRef} from 'apollo-angular';
 import {HttpClient} from '@angular/common/http';
-import {LocationModel} from '../model/location.model';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
 import {Injectable} from '@angular/core';
+import {CategoryFactory} from '../factory/category.factory';
 
 @Injectable()
 export class CategoryApi {
@@ -13,7 +13,7 @@ export class CategoryApi {
 
   private readonly uri: string = '/api/operation_categories';
 
-  constructor(private http: HttpClient, private apollo: Apollo) {
+  constructor(private http: HttpClient, private apollo: Apollo, private factory: CategoryFactory) {
   }
 
   public findAllBasicData(): Observable<{ result: CategoryModel[]; }> {
@@ -38,7 +38,7 @@ export class CategoryApi {
       .pipe(
         map(
           (result: any) => {
-            return { result: this.findAllToResultModels(result.edges) };
+            return { result: this.factory.findAllToResultModels(result.edges) };
           }
         )
       );
@@ -86,7 +86,7 @@ export class CategoryApi {
           (result: any) => {
             return {
               totalCount: result.totalCount,
-              result: this.findAllToResultModels(result.edges),
+              result: this.factory.findAllToResultModels(result.edges),
             };
           }
         )
@@ -109,34 +109,5 @@ export class CategoryApi {
       environment.apiUrl + this.uri,
       category
     );
-  }
-
-  /*TODO: go to factory*/
-  private findAllToResultModels(edges: []): CategoryModel[] {
-    const result: CategoryModel[] = [];
-
-    edges.forEach((category: any) => {
-      const model = new CategoryModel();
-
-      model.id = category.node.id;
-      model.name = category.node.name;
-      model.cursor = category?.cursor;
-      model.locationsModelsCollection = [];
-
-      if (category.node.locations) {
-        category.node.locations.edges.forEach((location: any) => {
-          const locationModel = new LocationModel();
-
-          locationModel.id = location.node.id;
-          locationModel.name = location.node.name;
-
-          model.locationsModelsCollection.push(locationModel);
-        });
-      }
-
-      result.push(model);
-    });
-
-    return result;
   }
 }

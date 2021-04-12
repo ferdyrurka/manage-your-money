@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import {Apollo, gql, QueryRef} from 'apollo-angular';
 import {map} from 'rxjs/operators';
+import {TypeFactory} from '../factory/type.factory';
 
 @Injectable()
 export class TypeApi {
@@ -12,7 +13,7 @@ export class TypeApi {
 
   private readonly uri: string = '/api/operation_types';
 
-  constructor(private http: HttpClient, private apollo: Apollo) {}
+  constructor(private http: HttpClient, private apollo: Apollo, private factory: TypeFactory) {}
 
   public findAll(limit: number, after: string|null, before: string|null): Observable<{result: TypeModel[]; totalCount: number}> {
     if (this.findAllQuery === null) {
@@ -49,7 +50,7 @@ export class TypeApi {
           (result: any) => {
             return {
               totalCount: result.totalCount,
-              result: this.findAllToResultModels(result.edges),
+              result: this.factory.findAllToResultModels(result.edges),
             };
           }
         )
@@ -73,22 +74,5 @@ export class TypeApi {
       environment.apiUrl + this.uri,
       type
     );
-  }
-
-  private findAllToResultModels(edges: []): TypeModel[] {
-    const result: TypeModel[] = [];
-
-    edges.forEach((edge: any) => {
-      const model = new TypeModel();
-
-      model.id = edge.node.id;
-      model.name = edge.node.name;
-      model.slugs = edge.node.slugs;
-      model.cursor = edge.cursor;
-
-      result.push(model);
-    });
-
-    return result;
   }
 }
