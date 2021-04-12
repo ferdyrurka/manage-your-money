@@ -1,0 +1,83 @@
+@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container {
+  margin: 20px auto 0 auto;
+  max-width: 1260px;
+  padding: 0 10px;
+}
+
+.top-nav {
+  background-color: #212121;
+  width: calc(100% - 20px);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1260px;
+  margin-bottom: 20px;
+}
+
+.list-items {
+  border-radius: 5px;
+  width: 100%;
+
+  table {
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  mat-paginator {
+    width: 100%;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+}
+
+
+.mt-1 {
+  margin-top: 10px;
+}
+
+.mb-1 {
+  margin-bottom: 10px;
+}
+
+.hidden-animation {
+  transition: 0.2s ease-in-out;
+  opacity: 0;
+}
+
+.show-animation {
+  transition: 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.small-form-wrapper {
+  margin: 0 10px 0 10px;
+
+  width: 100%;
+  max-width: 640px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
