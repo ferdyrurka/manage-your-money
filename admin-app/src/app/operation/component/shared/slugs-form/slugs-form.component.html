@@ -19,6 +19,10 @@
       <mat-error *ngIf="item.get('slug').hasError('maxlength')">
         Maximum length for name field is 256 chars
       </mat-error>
+
+      <mat-error *ngIf="item.get('slug').hasError('unique')">
+        Slug is must unique
+      </mat-error>
     </mat-form-field>
   </div>
 

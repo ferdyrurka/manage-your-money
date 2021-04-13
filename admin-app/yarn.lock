@@ -1199,6 +1199,13 @@
     node-gyp "^7.1.0"
     read-package-json-fast "^2.0.1"
 
+"@rxweb/reactive-form-validators@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@rxweb/reactive-form-validators/-/reactive-form-validators-2.1.2.tgz#3eeab7ce1b0c005abb6ddd92be0a9260f2a0c0c0"
+  integrity sha512-8TYYZnloCegoZrxgj2Ko57R/tTJO7UjBqOpRQfEYLYLJit7fepMS2okmfCq0tqNZQiUmdqs7eF1p9NrOIVqPQg==
+  dependencies:
+    tslib "^1.9.0"
+
 "@schematics/angular@11.2.5":
   version "11.2.5"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-11.2.5.tgz#c984687c95be32d3fa6016faa8b5a61715a830f5"
