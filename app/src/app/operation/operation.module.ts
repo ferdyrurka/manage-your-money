@@ -16,10 +16,12 @@ import {ErrorMessageService} from '../shared/service/error-message.service';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {SaveErrorService} from '../shared/service/save-error.service';
 import {IndexComponent} from './page/operation/index/index.component';
+import { ImportComponent } from './component/import/import.component';
 
 @NgModule({
   declarations: [
     IndexComponent,
+    ImportComponent,
   ],
   imports: [
     ReactiveFormsModule,

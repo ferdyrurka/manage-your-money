@@ -44,7 +44,7 @@ export class FormComponent implements OnInit {
       slugs: new FormArray([], []),
     });
 
-    this.data.model.slugs.forEach((slug: { slug: string }) => this.addItem(slug.slug));
+    this.data.model.slugs.forEach((slug: string) => this.addItem(slug));
 
     this.loading = false;
   }

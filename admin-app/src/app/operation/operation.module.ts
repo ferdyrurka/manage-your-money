@@ -33,6 +33,7 @@ import {FormComponent as CategoryFormComponent} from './component/category/form/
 import {LocationFormComponent as CategoryLocationFormComponent} from './component/category/location-form/location-form.component';
 import {IndexComponent as CategoryIndexPage} from './page/category/index/index.component';
 import {CategoryFactory} from './factory/category.factory';
+import {SlugFactory} from './factory/slug.factory';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import {CategoryFactory} from './factory/category.factory';
     TypeFactory,
     LocationFactory,
     CategoryFactory,
+    SlugFactory,
     ErrorMessageService,
     SaveErrorService,
   ],

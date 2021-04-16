@@ -1,18 +1,22 @@
 import {Injectable} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {TypeModel} from '../model/type.model';
+import {SlugFactory} from './slug.factory';
 
 @Injectable()
 export class TypeFactory {
+  public constructor(private slugFactory: SlugFactory) {
+  }
+
   public setFromFormGroup(type: TypeModel, form: FormGroup): void {
     type.name = form.get('name')?.value;
-    type.slugs = form.get('slugs')?.value;
+    type.slugs = this.slugFactory.getParsedSlugs(form.get('slugs')?.value);
   }
 
   public create(): TypeModel {
     const type = new TypeModel();
     type.name = '';
-    type.slugs = [{slug: ''}];
+    type.slugs = [''];
 
     return type;
   }

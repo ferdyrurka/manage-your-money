@@ -11,6 +11,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AppAssert;
 
 /**
  * @ORM\Entity
@@ -68,6 +69,7 @@ class OperationLocation
      * @ORM\Column(type="array")
      */
     #[Assert\NotBlank]
+    #[AppAssert\ConstraintSlugs]
     #[Groups(['admin:OperationLocation:write', 'admin:OperationLocation:read'])]
     private array $slugs = [];
 

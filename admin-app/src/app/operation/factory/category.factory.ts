@@ -24,6 +24,7 @@ export class CategoryFactory {
     const category = new CategoryModel();
     category.name = '';
     category.locations = [];
+    category.locationsModelsCollection = [];
 
     return category;
   }

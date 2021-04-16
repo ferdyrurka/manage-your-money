@@ -2,13 +2,17 @@ import {Injectable} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {LocationModel} from '../model/location.model';
 import {CategoryModel} from '../model/category.model';
+import {SlugFactory} from './slug.factory';
 
 @Injectable()
 export class LocationFactory {
+  public constructor(private slugFactory: SlugFactory) {
+  }
+
   public setApiModelFromFormGroup(model: LocationModel, form: FormGroup): void {
     model.name = form.get('name')?.value;
-    model.slugs = form.get('slugs')?.value;
     model.operationCategories = [];
+    model.slugs = this.slugFactory.getParsedSlugs(form.get('slugs')?.value);
 
     const categories = form.get('categories')?.value;
 
@@ -25,7 +29,7 @@ export class LocationFactory {
   {
     const location = new LocationModel();
     location.name = '';
-    location.slugs = [{slug: ''}];
+    location.slugs = [''];
     location.categoriesModelsCollection = [];
 
     return location;

@@ -10,5 +10,5 @@ export class LocationModel extends CursorModel {
 
   public categoriesModelsCollection: CategoryModel[];
 
-  public slugs: [{slug: string}];
+  public slugs: string[];
 }

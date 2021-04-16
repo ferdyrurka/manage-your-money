@@ -23,8 +23,8 @@ export class SlugsFormComponent implements OnInit {
   ngOnInit(): void {
     this.form.addControl('slugs', new FormArray([], []));
 
-    this.model.slugs.forEach((slug: { slug: string }) => {
-      this.addItem(slug.slug);
+    this.model.slugs.forEach((slug: string) => {
+      this.addItem(slug);
     });
   }
 
