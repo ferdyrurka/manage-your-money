@@ -6,6 +6,7 @@ services:
         autoconfigure: true
         bind:
             $privateStoragePath: '../data/'
+            $importStoragePath: 'import/operation'
 
     App\:
         resource: '../src/'

@@ -12,6 +12,7 @@ final class SaveImportOperationFileMessageHandler implements MessageHandlerInter
 {
     public function __construct(
         private string $privateStoragePath,
+        private string $importStoragePath,
         private ImportOperationFileService $importFileService,
     ) {
     }
@@ -28,7 +29,7 @@ final class SaveImportOperationFileMessageHandler implements MessageHandlerInter
         }
 
         $file->move(
-            $this->privateStoragePath . 'import/operation',
+            $this->privateStoragePath . $this->importStoragePath,
             $message->getUuid() . '.csv'
         );
     }

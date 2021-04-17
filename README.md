@@ -38,6 +38,8 @@ Required php ext:
   docker-compose up -d
     
   symfony server:start -d
+  
+  symfony console messenger:consume async
 ```
 
 ## Run local app

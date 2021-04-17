@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\DTO\OperationImportDTO;
 use App\Exception\InvalidArgumentException;
 use App\Form\OperationImportFormType;
+use App\Message\ImportOperationMessage;
 use App\Message\SaveImportOperationFileMessage;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +32,11 @@ class OperationImportController extends AbstractController
         $form->submit($request->files->all());
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $fileUuid = Uuid::uuid4();
+
             try {
                 $this->messageBus->dispatch(
-                    new SaveImportOperationFileMessage($form->getData()->file, Uuid::uuid4())
+                    new SaveImportOperationFileMessage($form->getData()->file, $fileUuid)
                 );
             } catch (HandlerFailedException $e) {
                 if ($e->getPrevious() instanceof InvalidArgumentException) {
@@ -42,6 +45,8 @@ class OperationImportController extends AbstractController
 
                 throw $e;
             }
+
+            $this->messageBus->dispatch(new ImportOperationMessage($fileUuid));
 
             return new JsonResponse([], Response::HTTP_OK);
         }
