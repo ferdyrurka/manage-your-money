@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,16 +52,37 @@ class Operation
     private float $balanceAfterSurgery;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="text")
      */
-    #[Groups(['user:Operation:read'])]
-    private DateTime $createdAt;
+    #[Assert\NotBlank]
+    #[Groups(['user:Operation:read', 'user:Operation:write'])]
+    private string $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
     #[Groups(['user:Operation:read'])]
-    private DateTime $updatedAt;
+    private DateTimeImmutable $payAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    #[Groups(['user:Operation:read'])]
+    private DateTimeImmutable $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    #[Groups(['user:Operation:read'])]
+    private DateTimeImmutable $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=OperationLocation::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    #[Assert\NotNull]
+    #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
+    private OperationLocation $location;
 
     /**
      * @ORM\ManyToOne(targetEntity=OperationType::class)
@@ -67,12 +90,12 @@ class Operation
      */
     #[Assert\NotNull]
     #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
-    private OperationLocation $location;
+    private OperationType $type;
 
     public function __construct()
     {
-        $this->createdAt = new DateTime();
-        $this->updatedAt = new DateTime();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -104,25 +127,55 @@ class Operation
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function getLocation(): ?OperationType
+    public function getLocation(): OperationLocation
     {
         return $this->location;
     }
 
-    public function setLocation(?OperationType $location): self
+    public function setLocation(OperationLocation $location): self
     {
         $this->location = $location;
 
         return $this;
+    }
+
+    public function getPayAt(): DateTimeImmutable
+    {
+        return $this->payAt;
+    }
+
+    public function setPayAt(DateTimeImmutable $payAt): void
+    {
+        $this->payAt = $payAt;
+    }
+
+    public function getType(): OperationType
+    {
+        return $this->type;
+    }
+
+    public function setType(OperationType $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 }

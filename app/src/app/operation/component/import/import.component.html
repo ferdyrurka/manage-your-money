@@ -1,1 +1,27 @@
-<p>import works!</p>
+<div class="loading">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
+
+<div class="small-form-wrapper"  [formGroup]="form" [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
+  <mat-form-field class="file-wrapper">
+    <mat-label>CSV File with operations</mat-label>
+
+    <ngx-mat-file-input [formControl]="form.get('file')" accept=".csv,text/csv"></ngx-mat-file-input>
+
+    <mat-error *ngIf="form.get('file').hasError('required')">
+      Field is required
+    </mat-error>
+
+    <mat-error *ngIf="!form.get('file').hasError('required') && form.get('file').hasError('fileSize')">
+      Maximum file large is 18MB
+    </mat-error>
+
+    <mat-error *ngIf="!form.get('file').hasError('required') && form.get('file').hasError('fileExtension')">
+      Required file extension is CSV
+    </mat-error>
+  </mat-form-field>
+
+  <div class="mt-1">
+    <button mat-raised-button color="primary" [disabled]="loading" (click)="import();">Import</button>
+  </div>
+</div>
