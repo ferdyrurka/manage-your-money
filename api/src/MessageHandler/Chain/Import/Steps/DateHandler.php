@@ -16,6 +16,10 @@ final class DateHandler extends AbstractHandler
         $rawPayAt = $this->getCsvColumnValue('payAt', $message->getCsvRecord());
         $payAt = $this->parseDate($rawPayAt);
 
+        if ($payAt > (new DateTime())) {
+            throw new InvalidArgumentException('Give a future date but excepted today or earlier');
+        }
+
         $message->getOperation()->setPayAt($payAt);
 
         parent::handle($message);

@@ -91,6 +91,16 @@ class Operation
     #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
     private ?OperationType $type = null;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private bool $expense = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private bool $income = false;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
@@ -110,6 +120,13 @@ class Operation
     public function setAmount(float $amount): self
     {
         $this->amount = $amount;
+
+        if ($this->amount < 0) {
+            $this->expense = true;
+        } else {
+            $this->income = true;
+        }
+
         $this->update();
 
         return $this;

@@ -23,7 +23,10 @@ class ImportCompositeTest extends TestCase
         $this->importComposite = new ImportComposite();
     }
 
-    public function testHandleManyHandlers(): void
+    /**
+     * @test
+     */
+    public function handleManyHandlers(): void
     {
         $handler1 = Mockery::mock(AbstractHandler::class);
         $handler2 = clone $handler1;
@@ -45,7 +48,10 @@ class ImportCompositeTest extends TestCase
         $this->importComposite->handle(new ImportOperationChainMessage(new Operation(), [], [], []));
     }
 
-    public function testHandleOneHandlers(): void
+    /**
+     * @test
+     */
+    public function handleOneHandlers(): void
     {
         $handler1 = Mockery::mock(AbstractHandler::class);
 
