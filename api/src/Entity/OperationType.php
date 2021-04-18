@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -62,9 +63,15 @@ class OperationType
     #[Groups(['admin:OperationType:read'])]
     private string $hash;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private DateTimeImmutable $createdAt;
+
     public function __construct()
     {
         $this->hash = Uuid::uuid4()->toString();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int

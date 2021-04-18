@@ -1,0 +1,6 @@
+flysystem:
+  storages:
+    import_operation.storage:
+      adapter: 'local'
+      options:
+        directory: '%import_path%'

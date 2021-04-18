@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,10 +62,16 @@ class OperationCategory
     #[Groups(['admin:OperationCategory:read'])]
     private string $hash;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private DateTimeImmutable $createdAt;
+
     public function __construct()
     {
         $this->locations = new ArrayCollection();
         $this->hash = Uuid::uuid4()->toString();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int

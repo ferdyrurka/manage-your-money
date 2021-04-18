@@ -11,7 +11,6 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 final class SaveImportOperationFileMessageHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private string $privateStoragePath,
         private string $importStoragePath,
         private ImportOperationFileService $importFileService,
     ) {
@@ -25,11 +24,11 @@ final class SaveImportOperationFileMessageHandler implements MessageHandlerInter
         $csv->setHeaderOffset(0);
 
         if (!$this->importFileService->checkCompatibility($csv)) {
-            throw new InvalidArgumentException('Not all required columns were provided.');
+            throw new InvalidArgumentException('Not all required columns or given to many columns were provided.');
         }
 
         $file->move(
-            $this->privateStoragePath . $this->importStoragePath,
+            $this->importStoragePath,
             $message->getUuid() . '.csv'
         );
     }

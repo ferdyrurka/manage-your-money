@@ -25,4 +25,9 @@ class ImportOperationColumnMapper
 
         return array_flip($keys);
     }
+
+    public static function findPlForSystemColumn(string $systemColumn): string
+    {
+        return array_search($systemColumn, self::PKOBP_PL_COLUMNS);
+    }
 }

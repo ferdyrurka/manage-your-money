@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -59,13 +58,13 @@ class Operation
     private string $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     #[Groups(['user:Operation:read'])]
-    private DateTimeImmutable $payAt;
+    private DateTime $payAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     #[Groups(['user:Operation:read'])]
     private DateTimeImmutable $createdAt;
@@ -74,28 +73,28 @@ class Operation
      * @ORM\Column(type="datetime")
      */
     #[Groups(['user:Operation:read'])]
-    private DateTimeImmutable $updatedAt;
+    private DateTime $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=OperationLocation::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     #[Assert\NotNull]
     #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
-    private OperationLocation $location;
+    private ?OperationLocation $location = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=OperationType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     #[Assert\NotNull]
     #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
-    private OperationType $type;
+    private ?OperationType $type = null;
 
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        $this->update();
     }
 
     public function getId(): ?int
@@ -111,6 +110,7 @@ class Operation
     public function setAmount(float $amount): self
     {
         $this->amount = $amount;
+        $this->update();
 
         return $this;
     }
@@ -123,50 +123,58 @@ class Operation
     public function setBalanceAfterSurgery(float $balanceAfterSurgery): self
     {
         $this->balanceAfterSurgery = $balanceAfterSurgery;
+        $this->update();
 
         return $this;
     }
 
-    public function getCreatedAt(): DateTimeInterface
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
-    public function getLocation(): OperationLocation
+    public function getLocation(): ?OperationLocation
     {
         return $this->location;
     }
 
-    public function setLocation(OperationLocation $location): self
+    public function setLocation(?OperationLocation $location): self
     {
         $this->location = $location;
+        $this->update();
 
         return $this;
     }
 
-    public function getPayAt(): DateTimeImmutable
+    public function getPayAt(): DateTime
     {
         return $this->payAt;
     }
 
-    public function setPayAt(DateTimeImmutable $payAt): void
+    public function setPayAt(DateTime $payAt): self
     {
         $this->payAt = $payAt;
+        $this->update();
+
+        return $this;
     }
 
-    public function getType(): OperationType
+    public function getType(): ?OperationType
     {
         return $this->type;
     }
 
-    public function setType(OperationType $type): void
+    public function setType(?OperationType $type): self
     {
         $this->type = $type;
+        $this->update();
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -174,8 +182,16 @@ class Operation
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+        $this->update();
+
+        return $this;
+    }
+
+    private function update(): void
+    {
+        $this->updatedAt = new DateTime();
     }
 }

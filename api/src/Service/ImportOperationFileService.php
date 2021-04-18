@@ -16,9 +16,11 @@ class ImportOperationFileService
         foreach ($csv->getHeader() as $column) {
             $column = strtolower($column);
 
-            if ($column && isset($requiredKeys[$column])) {
-                unset($requiredKeys[$column]);
+            if (empty($column) || !isset($requiredKeys[$column])) {
+                return false;
             }
+
+            unset($requiredKeys[$column]);
         }
 
         return (count($requiredKeys) === 0);

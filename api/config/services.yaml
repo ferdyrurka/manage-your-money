@@ -1,12 +1,13 @@
 parameters:
+    import_path: '%kernel.project_dir%/data/import/operation'
 
 services:
     _defaults:
         autowire: true
         autoconfigure: true
         bind:
-            $privateStoragePath: '../data/'
-            $importStoragePath: 'import/operation'
+            $privateStoragePath: '%kernel.project_dir%/data/'
+            $importStoragePath: '%import_path%'
 
     App\:
         resource: '../src/'
@@ -15,6 +16,15 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+
+    App\MessageHandler\ImportOperationMessageHandler:
+        arguments:
+            $handlers:
+                - '@App\MessageHandler\Chain\Import\Steps\LocationHandler'
+                - '@App\MessageHandler\Chain\Import\Steps\TypeHandler'
+                - '@App\MessageHandler\Chain\Import\Steps\DateHandler'
+                - '@App\MessageHandler\Chain\Import\Steps\MoneyHandler'
+                - '@App\MessageHandler\Chain\Import\Steps\OtherHandler'
 
     App\Controller\:
         resource: '../src/Controller/'

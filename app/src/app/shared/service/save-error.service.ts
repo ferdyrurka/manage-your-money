@@ -17,7 +17,6 @@ export class SaveErrorService {
       return;
     }
 
-    console.error(err);
     this.errorMessageService.show();
   }
 }
