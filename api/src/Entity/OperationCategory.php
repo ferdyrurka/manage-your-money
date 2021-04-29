@@ -19,18 +19,18 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 #[UniqueEntity(fields: ['name'])]
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
-        'post' => ['denormalization_context' => ['groups' => ['admin:OperationCategory:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read',]]],
+        'post' => ['denormalization_context' => ['groups' => ['write']]],
     ],
     graphql: ['item_query', 'collection_query',],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
-        'put' => ['denormalization_context' => ['groups' => ['admin:OperationCategory:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read',]]],
+        'put' => ['denormalization_context' => ['groups' => ['write']]],
         //TODO: delete is change status
         //  'delete',
     ],
-    denormalizationContext: ['groups' => ['admin:OperationCategory:write']],
-    normalizationContext: ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']],
+    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['read',]],
 )]
 class OperationCategory
 {
@@ -46,20 +46,20 @@ class OperationCategory
      * @ORM\Column(type="string", length=255)
      */
     #[Assert\NotBlank]
-    #[Groups(['admin:OperationCategory:read', 'admin:OperationCategory:write'])]
+    #[Groups(['read', 'write',])]
     private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=OperationLocation::class, inversedBy="operationCategories", fetch="EXTRA_LAZY")
      */
-    #[Groups(['admin:OperationCategory:write', 'admin:OperationLocation:read'])]
+    #[Groups(['write', 'read',])]
     private Collection $locations;
 
     /**
      * @ORM\Column(type="string", length=36, unique=true)
      */
     #[ApiProperty(identifier: true)]
-    #[Groups(['admin:OperationCategory:read'])]
+    #[Groups(['read',])]
     private string $hash;
 
     /**

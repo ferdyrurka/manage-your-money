@@ -2,10 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use App\Controller\FindAllOperationsForGraphController;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,19 +21,23 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
-        'post' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read']]],
+        'post' => ['denormalization_context' => ['groups' => ['write']]],
     ],
     graphql: ['item_query', 'collection_query'],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['user:Operation:read']]],
-        'patch' => ['denormalization_context' => ['groups' => ['user:Operation:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read']]],
+        'patch' => ['denormalization_context' => ['groups' => ['write']]],
         //TODO: delete is change status
         // 'delete',
     ],
-    denormalizationContext: ['groups' => ['user:Operation:write']],
-    normalizationContext: ['groups' => ['user:Operation:read']]
+    attributes: ['pagination_enabled' => false,],
+    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['read']]
 )]
+#[ApiFilter(DateFilter::class, properties: ['payAt' => DateFilter::EXCLUDE_NULL,])]
+#[ApiFilter(RangeFilter::class, properties: ['amount'])]
+#[ApiFilter(OrderFilter::class, properties: ['payAt'], arguments: ['orderParameterName' => 'order'])]
 class Operation
 {
     /**
@@ -34,45 +45,46 @@ class Operation
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[ApiProperty(identifier: false)]
     private int $id;
 
     /**
      * @ORM\Column(type="float")
      */
     #[Assert\NotBlank]
-    #[Groups(['user:Operation:read', 'user:Operation:write'])]
+    #[Groups(['read', 'write'])]
     private float $amount;
 
     /**
      * @ORM\Column(type="float")
      */
     #[Assert\NotBlank]
-    #[Groups(['user:Operation:read', 'user:Operation:write'])]
+    #[Groups(['read', 'write'])]
     private float $balanceAfterSurgery;
 
     /**
      * @ORM\Column(type="text")
      */
     #[Assert\NotBlank]
-    #[Groups(['user:Operation:read', 'user:Operation:write'])]
+    #[Groups(['read', 'write'])]
     private string $description;
 
     /**
      * @ORM\Column(type="date")
      */
-    #[Groups(['user:Operation:read'])]
+    #[Groups(['read'])]
     private DateTime $payAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    #[Groups(['user:Operation:read'])]
+    #[Groups(['read'])]
     private DateTimeImmutable $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    #[Groups(['user:Operation:read'])]
+    #[Groups(['read'])]
     private DateTime $updatedAt;
 
     /**
@@ -80,7 +92,7 @@ class Operation
      * @ORM\JoinColumn(nullable=true)
      */
     #[Assert\NotNull]
-    #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
+    #[Groups(['read', 'write'])]
     private ?OperationLocation $location = null;
 
     /**
@@ -88,7 +100,7 @@ class Operation
      * @ORM\JoinColumn(nullable=true)
      */
     #[Assert\NotNull]
-    #[Groups(['user:OperationLocation:read', 'user:Operation:write'])]
+    #[Groups(['read', 'write'])]
     private ?OperationType $type = null;
 
     /**
@@ -101,9 +113,17 @@ class Operation
      */
     private bool $income = false;
 
+    /**
+     * @ORM\Column(type="string", length=36, unique=true)
+     */
+    #[ApiProperty(identifier: true)]
+    #[Groups(['read'])]
+    private string $hash;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->hash = Uuid::uuid4()->toString();
         $this->update();
     }
 
@@ -205,6 +225,11 @@ class Operation
         $this->update();
 
         return $this;
+    }
+
+    public function getHash(): string
+    {
+        return $this->hash;
     }
 
     private function update(): void

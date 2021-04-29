@@ -18,7 +18,7 @@ export class CategoryNameLikeFilter {
     const filterValue = value.toLowerCase();
 
     return this.getNotUsedCategories()
-      .filter((option: CategoryModel) => option.name.toLowerCase().indexOf(filterValue) === 0);
+      .filter((option: CategoryModel) => option.name.toLowerCase().indexOf(filterValue) !== -1);
   }
 
   private getNotUsedCategories(): CategoryModel[] {

@@ -38,8 +38,6 @@ final class ImportOperationMessageHandler implements MessageHandlerInterface
         );
         $csv->setHeaderOffset(0);
 
-        $baseOperation = new Operation();
-
         $locations = $this->operationLocationRepository->findAll();
         $types = $this->operationTypeRepository->findAll();
 
@@ -48,7 +46,7 @@ final class ImportOperationMessageHandler implements MessageHandlerInterface
         }
 
         foreach ($csv as $record) {
-            $operation = clone $baseOperation;
+            $operation = new Operation();
             $message = new ImportOperationChainMessage($operation, $record, $locations, $types);
 
             try {

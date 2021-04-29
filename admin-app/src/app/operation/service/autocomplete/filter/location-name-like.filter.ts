@@ -18,7 +18,7 @@ export class LocationNameLikeFilter {
     const filterValue = value.toLowerCase();
 
     return this.getNotUsedLocations()
-      .filter((option: LocationModel) => option.name.toLowerCase().indexOf(filterValue) === 0);
+      .filter((option: LocationModel) => option.name.toLowerCase().indexOf(filterValue) !== -1);
   }
 
   private getNotUsedLocations(): LocationModel[] {

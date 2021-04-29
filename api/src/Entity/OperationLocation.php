@@ -20,21 +20,21 @@ use App\Validator as AppAssert;
 #[UniqueEntity(fields: ['name'])]
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
-        'post' => ['denormalization_context' => ['groups' => ['admin:OperationLocation:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read']]],
+        'post' => ['denormalization_context' => ['groups' => ['write']]],
     ],
     graphql: [
         'item_query',
         'collection_query',
     ],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['admin:OperationCategory:read', 'admin:OperationLocation:read']]],
-        'put' => ['denormalization_context' => ['groups' => ['admin:OperationLocation:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read']]],
+        'put' => ['denormalization_context' => ['groups' => ['write']]],
     //TODO: delete is change status
     //    'delete',
     ],
-    denormalizationContext: ['groups' => ['admin:OperationLocation:write']],
-    normalizationContext: ['groups' => ['admin:OperationLocation:read', 'admin:OperationCategory:read']],
+    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['read']],
 )]
 class OperationLocation
 {
@@ -50,20 +50,20 @@ class OperationLocation
      * @ORM\Column(type="string", length=255, unique=true)
      */
     #[Assert\NotBlank]
-    #[Groups(['admin:OperationLocation:read', 'admin:OperationLocation:write'])]
+    #[Groups(['read', 'write',])]
     private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=OperationCategory::class, mappedBy="locations", fetch="EXTRA_LAZY")
      */
-    #[Groups(['admin:OperationLocation:write', 'admin:OperationCategory:read'])]
+    #[Groups(['write', 'read'])]
     private Collection $operationCategories;
 
     /**
      * @ORM\Column(type="string", length=36, unique=true)
      */
     #[ApiProperty(identifier: true)]
-    #[Groups(['admin:OperationLocation:read'])]
+    #[Groups(['read',])]
     private string $hash;
 
     /**
@@ -71,7 +71,7 @@ class OperationLocation
      */
     #[Assert\NotBlank]
     #[AppAssert\ConstraintSlugs]
-    #[Groups(['admin:OperationLocation:write', 'admin:OperationLocation:read'])]
+    #[Groups(['write', 'read'])]
     private array $slugs = [];
 
     /**

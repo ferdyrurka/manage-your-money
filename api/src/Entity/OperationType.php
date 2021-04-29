@@ -18,18 +18,18 @@ use App\Validator as AppAssert;
 #[UniqueEntity(fields: ['name'])]
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['admin:OperationType:read']]],
-        'post' => ['denormalization_context' => ['groups' => ['admin:OperationType:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read']]],
+        'post' => ['denormalization_context' => ['groups' => ['write']]],
     ],
     graphql: ['item_query', 'collection_query',],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['admin:OperationType:read']]],
-        'put' => ['denormalization_context' => ['groups' => ['admin:OperationType:write']]],
+        'get' => ['normalization_context' => ['groups' => ['read']]],
+        'put' => ['denormalization_context' => ['groups' => ['write']]],
         //TODO: delete is change status
         // 'delete',
     ],
-    denormalizationContext: ['groups' => ['admin:OperationType:write']],
-    normalizationContext: ['groups' => ['admin:OperationType:read']],
+    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['read']],
 )]
 class OperationType
 {
@@ -45,7 +45,7 @@ class OperationType
      * @ORM\Column(type="string", length=64, unique=true)
      */
     #[Assert\NotBlank]
-    #[Groups(['admin:OperationType:read', 'admin:OperationType:write'])]
+    #[Groups(['read', 'write'])]
     private string $name;
 
     /**
@@ -53,14 +53,14 @@ class OperationType
      */
     #[Assert\NotBlank]
     #[AppAssert\ConstraintSlugs]
-    #[Groups(['admin:OperationType:read', 'admin:OperationType:write'])]
+    #[Groups(['read', 'write'])]
     private array $slugs = [];
 
     /**
      * @ORM\Column(type="string", length=36, unique=true)
      */
     #[ApiProperty(identifier: true)]
-    #[Groups(['admin:OperationType:read'])]
+    #[Groups(['read'])]
     private string $hash;
 
     /**
