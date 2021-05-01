@@ -5,7 +5,7 @@ import {GraphDateModel} from '../model/graph-date.model';
 import {range} from 'rxjs';
 
 @Injectable()
-export class DataForModelService {
+export class DataForGraphService {
   public groupByGeneralOperations(operations: DataForGraphModel[]): {labels: string[], values: number[]}
   {
     const sumPerWeekAmount: {[key: string]: number} = {};

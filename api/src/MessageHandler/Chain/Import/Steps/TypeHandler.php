@@ -20,7 +20,7 @@ final class TypeHandler extends AbstractHandler
         $value = $this->getCsvColumnValue(OperationType::class, $message->getCsvRecord());
 
         foreach ($message->getTypes() as $type) {
-            if (str_contains_array($value, $type->getSlugs()) !== false) {
+            if (str_contains_array($value, $type->getSlugs())) {
                 $message->getOperation()->setType($type);
                 break;
             }

@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DataForGraphModel} from '../../../model/data-for-graph.model';
 import {Color, Label} from 'ng2-charts';
 import {ChartDataSets} from 'chart.js';
-import {DataForModelService} from '../../../service/data-for-model.service';
+import {DataForGraphService} from '../../../service/data-for-graph.service';
 import {Observable} from 'rxjs';
 import {Colors} from '../../../service/colors';
 
@@ -47,7 +47,7 @@ export class GeneralComponent implements OnInit {
   @Input()
   private operationsIncomingObservable: Observable<DataForGraphModel[]>;
 
-  constructor(private dataForModelService: DataForModelService) {
+  constructor(private dataForModelService: DataForGraphService) {
   }
 
   ngOnInit(): void {

@@ -25,7 +25,7 @@ import {TypeComponent as GraphTypeComponent} from './component/short-graph/type/
 import {GeneralComponent as GraphGeneralComponent} from './component/short-graph/general/general.component';
 import {DataForGraphFactory} from './factory/data-for-graph.factory';
 import {ChartsModule} from 'ng2-charts';
-import {DataForModelService} from './service/data-for-model.service';
+import {DataForGraphService} from './service/data-for-graph.service';
 import {CategoryComponent as GraphCategoryComponent} from './component/short-graph/category/category.component';
 
 @NgModule({
@@ -61,7 +61,7 @@ import {CategoryComponent as GraphCategoryComponent} from './component/short-gra
     OperationApi,
     OperationFactory,
     DataForGraphFactory,
-    DataForModelService,
+    DataForGraphService,
   ],
   bootstrap: []
 })

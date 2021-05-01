@@ -2,7 +2,7 @@
 
 namespace PHPExtension;
 
-function str_contains_array(string $haystack, array $needles): bool|int
+function str_contains_array(string $haystack, array $needles): bool
 {
     $haystack = strtolower($haystack);
 
@@ -10,7 +10,7 @@ function str_contains_array(string $haystack, array $needles): bool|int
         $needle = strtolower($needle);
 
         if (str_contains($haystack, $needle)) {
-            return $key;
+            return true;
         }
     }
 

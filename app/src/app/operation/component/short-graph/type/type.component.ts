@@ -3,7 +3,7 @@ import {ChartDataSets} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {Observable} from 'rxjs';
 import {DataForGraphModel} from '../../../model/data-for-graph.model';
-import {DataForModelService} from '../../../service/data-for-model.service';
+import {DataForGraphService} from '../../../service/data-for-graph.service';
 import {Colors} from '../../../service/colors';
 
 @Component({
@@ -33,7 +33,7 @@ export class TypeComponent implements OnInit {
   @Input()
   private operationsExpenseObservable: Observable<DataForGraphModel[]>;
 
-  constructor(private dataForGraphService: DataForModelService) { }
+  constructor(private dataForGraphService: DataForGraphService) { }
 
   ngOnInit(): void {
     this.operationsExpenseObservable.subscribe(
