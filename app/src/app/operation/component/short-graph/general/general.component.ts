@@ -4,6 +4,7 @@ import {Color, Label} from 'ng2-charts';
 import {ChartDataSets} from 'chart.js';
 import {DataForModelService} from '../../../service/data-for-model.service';
 import {Observable} from 'rxjs';
+import {Colors} from '../../../service/colors';
 
 @Component({
   selector: 'app-operation-component-short-graph-general',
@@ -11,7 +12,7 @@ import {Observable} from 'rxjs';
   styleUrls: ['./general.component.scss']
 })
 export class GeneralComponent implements OnInit {
-  public loading = false;
+  public loading = true;
 
   public lineChartData: ChartDataSets[] = [
     {data: [], label: 'Your expenses by week'},
@@ -27,12 +28,12 @@ export class GeneralComponent implements OnInit {
 
   public lineChartColors: Color[] = [
     {
-      borderColor: 'white',
-      backgroundColor: 'rgba(255,255,0,0.28)',
+      borderColor: 'red',
+      backgroundColor: Colors.getRBGColorByName('red'),
     },
     {
-      borderColor: 'red',
-      backgroundColor: 'rgba(255,255,0,0.5)',
+      borderColor: 'green',
+      backgroundColor: Colors.getRBGColorByName('green'),
     },
   ];
 
@@ -55,7 +56,10 @@ export class GeneralComponent implements OnInit {
         const groupByData = this.dataForModelService.groupByGeneralOperations(operations);
 
         this.lineChartData[0].data = groupByData.values;
-        this.lineChartLabels = groupByData.labels;
+
+        if (this.lineChartLabels.length < groupByData.labels.length) {
+          this.lineChartLabels = groupByData.labels;
+        }
 
         this.loading = false;
       }
@@ -66,6 +70,11 @@ export class GeneralComponent implements OnInit {
         const groupByData = this.dataForModelService.groupByGeneralOperations(operations);
 
         this.lineChartData[1].data = groupByData.values;
+
+        if (this.lineChartLabels.length < groupByData.labels.length) {
+          this.lineChartLabels = groupByData.labels;
+        }
+
         this.loading = false;
       }
     );

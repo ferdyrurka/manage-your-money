@@ -22,11 +22,11 @@ import {OperationApi} from './api/operation.api';
 import {OperationFactory} from './factory/operation.factory';
 import {ShortGraphComponent} from './page/short-graph/short-graph.component';
 import {TypeComponent as GraphTypeComponent} from './component/short-graph/type/type.component';
-import {LocationComponent as GraphLocationComponent} from './component/short-graph/location/location.component';
 import {GeneralComponent as GraphGeneralComponent} from './component/short-graph/general/general.component';
 import {DataForGraphFactory} from './factory/data-for-graph.factory';
 import {ChartsModule} from 'ng2-charts';
 import {DataForModelService} from './service/data-for-model.service';
+import {CategoryComponent as GraphCategoryComponent} from './component/short-graph/category/category.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +34,8 @@ import {DataForModelService} from './service/data-for-model.service';
     ImportComponent,
     ShortGraphComponent,
     GraphTypeComponent,
-    GraphLocationComponent,
     GraphGeneralComponent,
+    GraphCategoryComponent,
   ],
   imports: [
     ReactiveFormsModule,

@@ -19,7 +19,7 @@ export class DataForGraphFactory {
         model.location = null;
       }
 
-      if (model.type) {
+      if (operation.type) {
         model.type = {id: operation.type.id, name: operation.type.name};
       } else {
         model.type = null;
