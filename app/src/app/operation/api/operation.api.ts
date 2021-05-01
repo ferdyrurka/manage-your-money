@@ -40,12 +40,17 @@ export class OperationApi {
                 amount,
                 payAt,
                 location {
-                  id
                   name,
+                  operationCategories {
+                    edges {
+                      node {
+                        name,
+                      }
+                    }
+                  }
                 }
                 type {
-                  id,
-                  name
+                  name,
                 }
               }
            }

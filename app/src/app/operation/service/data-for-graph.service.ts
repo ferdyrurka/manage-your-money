@@ -55,6 +55,59 @@ export class DataForGraphService {
       sumPerWeekAmount[mainKey][key] += this.getAmount(operation);
     });
 
+    return this.preparedResultDataForMultiCharDataset(sumPerWeekAmount);
+  }
+
+  public groupByCategoriesOperations(
+    operations: DataForGraphModel[]
+  ): {labels: string[], values: {data: number[], label: string}[]} {
+    const sumPerWeekAmount: {[key: string]: {[key: string]: number}} = {};
+
+    operations.forEach((operation: DataForGraphModel) => {
+      if (operation.categories === null) {
+        return;
+      }
+
+      const key = this.getKey(operation);
+
+      operation.categories.forEach((category) => {
+        const mainKey = category.name;
+
+        if (sumPerWeekAmount[mainKey] === undefined) {
+          sumPerWeekAmount[mainKey] = {};
+        }
+
+        if (sumPerWeekAmount[mainKey][key] === undefined) {
+          sumPerWeekAmount[mainKey][key] = 0;
+        }
+
+        sumPerWeekAmount[mainKey][key] += this.getAmount(operation);
+      });
+    });
+
+    return this.preparedResultDataForMultiCharDataset(sumPerWeekAmount);
+  }
+
+  private getKey(operation: DataForGraphModel): string
+  {
+    const dateFormat = 'YYYY-MM-DD';
+    const date = moment(operation.payAt);
+
+    return date.startOf('isoWeek').format(dateFormat) + '-' + date.endOf('isoWeek').format(dateFormat);
+  }
+
+  private getAmount(operation: DataForGraphModel): number
+  {
+    if (operation.amount < 0) {
+      return (operation.amount * -1);
+    }
+
+    return operation.amount;
+  }
+
+  private preparedResultDataForMultiCharDataset(
+    sumPerWeekAmount: {[key: string]: {[key: string]: number}}
+  ): {labels: string[], values: {data: number[], label: string}[]} {
     const labels: string[] = [];
     const values: {data: number[], label: string}[] = [];
 
@@ -73,22 +126,5 @@ export class DataForGraphService {
     }
 
     return {labels, values};
-  }
-
-  private getKey(operation: DataForGraphModel): string
-  {
-    const dateFormat = 'YYYY-MM-DD';
-    const date = moment(operation.payAt);
-
-    return date.startOf('isoWeek').format(dateFormat) + '-' + date.endOf('isoWeek').format(dateFormat);
-  }
-
-  private getAmount(operation: DataForGraphModel): number
-  {
-    if (operation.amount < 0) {
-      return (operation.amount * -1);
-    }
-
-    return operation.amount;
   }
 }

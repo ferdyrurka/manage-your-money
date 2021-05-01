@@ -5,7 +5,9 @@ export class DataForGraphModel {
 
   payAt: string;
 
-  location: {id: string, name: string}|null;
+  location: {name: string}|null;
 
-  type: {id: string, name: string}|null;
+  type: {name: string}|null;
+
+  categories: {name: string}[]|null;
 }
