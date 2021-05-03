@@ -1,7 +1,13 @@
 # Manage your money
 
 - Final project for universities
-- The project was created to get to know GraphQL and API Platform
+- The project was created to get to know GraphQL, API Platform, Angular
+- The project contains a strange solution because I was doing various tests. **This project should not be taken as a best practice!**
+
+## TODO:
+
+- [ ] refactoring endpoint for receive all data for model (current is find all and receive redundant data)
+- [ ] tests graphql mutations (refactoring from save in api platform endpoint to graphql)
 
 ## Requirements
 

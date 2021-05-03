@@ -67,7 +67,27 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public openUpdateModal(element: OperationDto): void {
-
+    // this.modal
+    //   .open(
+    //     FormComponent,
+    //     {
+    //       minWidth: '320px',
+    //       maxWidth: '640px',
+    //       maxHeight: '99vh',
+    //       width: '100%',
+    //       data: {
+    //         dto,
+    //       },
+    //     }
+    //   )
+    //   .afterClosed()
+    //   .subscribe(
+    //     (data) => {
+    //       if (data && data.successSave) {
+    //         this.refreshData();
+    //       }
+    //     },
+    //   );
   }
 
   public pageHandle(event: PageEvent): void {

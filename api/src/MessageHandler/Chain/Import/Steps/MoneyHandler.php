@@ -19,13 +19,23 @@ final class MoneyHandler extends AbstractHandler
 
     private function setBalanceAfterSurgery(ImportOperationChainMessage $message): void
     {
-        $balanceAfterSurgery = (float) $this->getCsvColumnValue('balanceAfterSurgery', $message->getCsvRecord());
-        $message->getOperation()->setBalanceAfterSurgery($balanceAfterSurgery);
+        $balanceAfterSurgery = str_replace(
+            ',',
+            '.',
+            $this->getCsvColumnValue('balanceAfterSurgery', $message->getCsvRecord())
+        );
+
+        $message->getOperation()->setBalanceAfterSurgery((float) $balanceAfterSurgery);
     }
 
     private function setAmount(ImportOperationChainMessage $message): void
     {
-        $amount = (float) $this->getCsvColumnValue('amount', $message->getCsvRecord());
-        $message->getOperation()->setAmount($amount);
+        $amount = str_replace(
+            ',',
+            '.',
+            $this->getCsvColumnValue('amount', $message->getCsvRecord())
+        );
+
+        $message->getOperation()->setAmount((float) $amount);
     }
 }

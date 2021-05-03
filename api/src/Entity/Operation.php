@@ -28,11 +28,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: [
         'get' => ['normalization_context' => ['groups' => ['read']]],
         'patch' => ['denormalization_context' => ['groups' => ['write']]],
-        //TODO: delete is change status
-        // 'delete',
+        'delete',
     ],
-    attributes: ['pagination_enabled' => false,],
+    attributes: ['pagination_client_enabled' => true],
     denormalizationContext: ['groups' => ['write']],
+    formats: ['json'],
     normalizationContext: ['groups' => ['read']]
 )]
 #[ApiFilter(DateFilter::class, properties: ['payAt' => DateFilter::EXCLUDE_NULL,])]

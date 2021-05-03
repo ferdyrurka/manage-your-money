@@ -25,8 +25,6 @@ use App\Validator as AppAssert;
     itemOperations: [
         'get' => ['normalization_context' => ['groups' => ['read']]],
         'put' => ['denormalization_context' => ['groups' => ['write']]],
-        //TODO: delete is change status
-        // 'delete',
     ],
     denormalizationContext: ['groups' => ['write']],
     normalizationContext: ['groups' => ['read']],
