@@ -8,7 +8,6 @@ import {CharSingleDatasetShortGraphDto} from '../dto/char-single-dataset-short-g
 
 @Injectable()
 export class DataForGraphService {
-  // todo: refactoring to use in return dto
   public groupByGeneralOperations(operations: DataForGraphDto[]): CharDatasetShortGraphDto<number[]>
   {
     const sumPerWeekAmount: {[key: string]: number} = {};

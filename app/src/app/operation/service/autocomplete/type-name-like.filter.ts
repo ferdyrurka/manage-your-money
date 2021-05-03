@@ -1,10 +1,10 @@
-import {FormArray, FormControl} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {TypeDto} from '../../dto/type.dto';
 
 export class TypeNameLikeFilter {
-  constructor(private readonly options: TypeDto[], private typesFormGroup: FormArray) {
+  constructor(private readonly options: TypeDto[], private typeFormGroup: FormGroup) {
   }
 
   public handle(control: FormControl): Observable<TypeDto[]> {
@@ -22,8 +22,8 @@ export class TypeNameLikeFilter {
   }
 
   private getNotUsedTypes(): TypeDto[] {
-    const usedTypes = this.typesFormGroup.controls.map((type) => type.get('name').value);
+    const usedType = this.typeFormGroup.get('name').value;
 
-    return this.options.filter((option: TypeDto) => !usedTypes.includes(option.name));
+    return this.options.filter((option: TypeDto) => usedType !== option.name);
   }
 }

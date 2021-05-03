@@ -24,7 +24,7 @@
     <mat-form-field>
       <mat-label>Amount</mat-label>
 
-      <input type="text" matInput [formControl]="form.get('amount')" [errorStateMatcher]="matcher"
+      <input type="number" matInput [formControl]="form.get('amount')" [errorStateMatcher]="matcher"
              placeholder="Eg. -10.45, 15.23">
 
       <mat-error *ngIf="form.get('amount').hasError('required')">
@@ -35,13 +35,15 @@
     <mat-form-field>
       <mat-label>balance after surgery</mat-label>
 
-      <input type="text" matInput [formControl]="form.get('balanceAfterSurgery')" [errorStateMatcher]="matcher"
+      <input type="number" matInput [formControl]="form.get('balanceAfterSurgery')" [errorStateMatcher]="matcher"
              placeholder="Eg. -1000, 1000">
 
       <mat-error *ngIf="form.get('balanceAfterSurgery').hasError('required')">
         Field name is required field
       </mat-error>
     </mat-form-field>
+
+    <app-operation-component-location-form [dto]="data.dto" [form]="form"></app-operation-component-location-form>
 
     <div class="mt-1">
       <button mat-raised-button color="primary" [disabled]="loading" (click)="save();">Save</button>

@@ -20,24 +20,20 @@ export class OperationFactory {
   {
     const dto = new OperationDto();
     dto.payAt = moment().format('YYYY-MM-DD');
+    dto.location = new LocationDto();
 
     return dto;
   }
 
-  public createWriteModel(dto: OperationDto, form: FormGroup): Operation {
+  public createWriteModel(id: string|undefined, form: FormGroup): Operation {
     const writeModel = new Operation();
-    // dto.name = form.get('name')?.value;
-    // dto.locations = [];
-    //
-    // const locations = form.get('locations')?.value;
-    //
-    // if (locations.length > 0) {
-    //   locations.forEach((location: { name: string, id: string }) => {
-    //     if (location.id) {
-    //       dto.locations.push(location.id);
-    //     }
-    //   });
-    // }
+    writeModel.id = id;
+    writeModel.amount = Number(form.get('amount').value);
+    writeModel.payAt = form.get('payAt').value;
+    writeModel.balanceAfterSurgery = Number(form.get('balanceAfterSurgery').value);
+
+    writeModel.location = form.get('location').get('id')?.value;
+    // writeModel.type = form.get('type').get('id')?.value;
 
     return writeModel;
   }

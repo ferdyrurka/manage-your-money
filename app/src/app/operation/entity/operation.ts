@@ -5,8 +5,6 @@ export class Operation {
 
   public balanceAfterSurgery: number;
 
-  public description: string;
-
   public payAt: string;
 
   public type: string | null;

@@ -36,6 +36,8 @@ import {TypeFactory} from './factory/type.factory';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {PayAtFilter} from './service/filter/pay-at.filter';
+import {TypeApi} from './api/type.api';
+import {LocationApi} from './api/location.api';
 
 @NgModule({
   declarations: [
@@ -80,6 +82,8 @@ import {PayAtFilter} from './service/filter/pay-at.filter';
     LocationFactory,
     TypeFactory,
     PayAtFilter,
+    LocationApi,
+    TypeApi,
   ],
   bootstrap: []
 })

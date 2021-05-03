@@ -41,8 +41,6 @@ export class FormComponent implements OnInit {
     this.form = new FormGroup({
       payAt: new FormControl(this.data.dto.payAt, [
         Validators.required,
-        // Validators.pattern()
-        // todo: add validator for datetime
       ]),
       amount: new FormControl(this.data.dto.amount, [
         Validators.required,
@@ -64,7 +62,7 @@ export class FormComponent implements OnInit {
 
     this.loading = true;
 
-    const operation = this.factory.createWriteModel(this.data.dto, this.form);
+    const operation = this.factory.createWriteModel(this.data.dto.id, this.form);
 
     this.api
       .save(operation)

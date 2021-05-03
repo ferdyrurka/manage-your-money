@@ -1,10 +1,10 @@
-import {FormArray, FormControl} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {LocationDto} from '../../dto/location.dto';
 
 export class LocationNameLikeFilter {
-  constructor(private readonly options: LocationDto[], private locationsFormGroup: FormArray) {
+  constructor(private readonly options: LocationDto[], private locationFormGroup: FormGroup) {
   }
 
   public handle(control: FormControl): Observable<LocationDto[]> {
@@ -22,8 +22,8 @@ export class LocationNameLikeFilter {
   }
 
   private getNotUsedLocations(): LocationDto[] {
-    const usedLocations = this.locationsFormGroup.controls.map((location) => location.get('name').value);
+    const usedLocation = this.locationFormGroup.get('name').value;
 
-    return this.options.filter((option: LocationDto) => !usedLocations.includes(option.name));
+    return this.options.filter((option: LocationDto) => usedLocation !== option.name);
   }
 }

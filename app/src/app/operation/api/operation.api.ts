@@ -14,7 +14,7 @@ import {Operation} from '../entity/operation';
 
 @Injectable()
 export class OperationApi {
-  private readonly uri: string = '/api/operation';
+  private readonly uri: string = '/api/operations';
 
   private findAllQuery: QueryRef<any>|null = null;
 
@@ -38,8 +38,13 @@ export class OperationApi {
 
   public findAllForGraph(afterDate: string, greaterThan: number | null, lessThan: number | null): Observable<DataForGraphDto[]> {
     return this.http.get(
-      environment.apiUrl + this.uri + 's',
+      environment.apiUrl + this.uri,
       {
+        headers: new HttpHeaders(
+          {
+            'Content-Type':  'application/json',
+          }
+        ),
         params: {
           'payAt[after]': afterDate,
           'amount[gte]': greaterThan !== null ? greaterThan.toString() : '',

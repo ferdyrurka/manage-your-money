@@ -10,7 +10,7 @@ export class ErrorMessageService {
 
   public showDuplicate(): void
   {
-    this.snackBar.open('This entity already exists.', null, {duration: 5000});
+    this.snackBar.open('Something went wrong, please try again in a moment.', null, {duration: 5000});
   }
 
   public showBadRequest(message: string|null): void
