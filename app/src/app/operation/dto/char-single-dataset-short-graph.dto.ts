@@ -1,4 +1,4 @@
-export class CharSingleDatasetShortGraphModel {
+export class CharSingleDatasetShortGraphDto {
   public label: string;
 
   public data: number[];

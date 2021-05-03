@@ -27,6 +27,10 @@ import {DataForGraphFactory} from './factory/data-for-graph.factory';
 import {ChartsModule} from 'ng2-charts';
 import {DataForGraphService} from './service/data-for-graph.service';
 import {CategoryComponent as GraphCategoryComponent} from './component/short-graph/category/category.component';
+import { ListComponent } from './component/list/list.component';
+import { FormComponent } from './component/form/form.component';
+import { LocationFormComponent } from './component/location-form/location-form.component';
+import { TypeFormComponent } from './component/type-form/type-form.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +40,10 @@ import {CategoryComponent as GraphCategoryComponent} from './component/short-gra
     GraphTypeComponent,
     GraphGeneralComponent,
     GraphCategoryComponent,
+    ListComponent,
+    FormComponent,
+    LocationFormComponent,
+    TypeFormComponent,
   ],
   imports: [
     ReactiveFormsModule,

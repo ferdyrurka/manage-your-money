@@ -1,19 +1,19 @@
 import {Injectable} from '@angular/core';
-import {DataForGraphModel} from '../model/data-for-graph.model';
+import {DataForGraphDto} from '../dto/data-for-graph.dto';
 import moment from 'moment';
-import {GraphDateModel} from '../model/graph-date.model';
+import {GraphDateDto} from '../dto/graph-date.dto';
 import {range} from 'rxjs';
-import {CharDatasetShortGraphModel} from '../model/char-dataset-short-graph.model';
-import {CharSingleDatasetShortGraphModel} from '../model/char-single-dataset-short-graph.model';
+import {CharDatasetShortGraphDto} from '../dto/char-dataset-short-graph.dto';
+import {CharSingleDatasetShortGraphDto} from '../dto/char-single-dataset-short-graph.dto';
 
 @Injectable()
 export class DataForGraphService {
-  // todo: refactoring to use in return model
-  public groupByGeneralOperations(operations: DataForGraphModel[]): CharDatasetShortGraphModel<number[]>
+  // todo: refactoring to use in return dto
+  public groupByGeneralOperations(operations: DataForGraphDto[]): CharDatasetShortGraphDto<number[]>
   {
     const sumPerWeekAmount: {[key: string]: number} = {};
 
-    operations.forEach((operation: DataForGraphModel) => {
+    operations.forEach((operation: DataForGraphDto) => {
         const key = this.getKey(operation);
 
         if (sumPerWeekAmount[key] === undefined) {
@@ -31,15 +31,15 @@ export class DataForGraphService {
       values.push(sumAmount);
     }
 
-    return new CharDatasetShortGraphModel<number[]>(labels, values);
+    return new CharDatasetShortGraphDto<number[]>(labels, values);
   }
 
   public groupByTypeOperations(
-    operations: DataForGraphModel[]
-  ): CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]> {
+    operations: DataForGraphDto[]
+  ): CharDatasetShortGraphDto<CharSingleDatasetShortGraphDto[]> {
     const sumPerWeekAmount: {[key: string]: {[key: string]: number}} = {};
 
-    operations.forEach((operation: DataForGraphModel) => {
+    operations.forEach((operation: DataForGraphDto) => {
       if (operation.type === null) {
         return;
       }
@@ -62,11 +62,11 @@ export class DataForGraphService {
   }
 
   public groupByCategoriesOperations(
-    operations: DataForGraphModel[]
-  ): CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]> {
+    operations: DataForGraphDto[]
+  ): CharDatasetShortGraphDto<CharSingleDatasetShortGraphDto[]> {
     const sumPerWeekAmount: {[key: string]: {[key: string]: number}} = {};
 
-    operations.forEach((operation: DataForGraphModel) => {
+    operations.forEach((operation: DataForGraphDto) => {
       if (operation.categories === null) {
         return;
       }
@@ -91,7 +91,7 @@ export class DataForGraphService {
     return this.preparedResultDataForMultiCharDataset(sumPerWeekAmount);
   }
 
-  private getKey(operation: DataForGraphModel): string
+  private getKey(operation: DataForGraphDto): string
   {
     const dateFormat = 'YYYY-MM-DD';
     const date = moment(operation.payAt);
@@ -99,7 +99,7 @@ export class DataForGraphService {
     return date.startOf('isoWeek').format(dateFormat) + '-' + date.endOf('isoWeek').format(dateFormat);
   }
 
-  private getAmount(operation: DataForGraphModel): number
+  private getAmount(operation: DataForGraphDto): number
   {
     if (operation.amount < 0) {
       return (operation.amount * -1);
@@ -110,9 +110,9 @@ export class DataForGraphService {
 
   private preparedResultDataForMultiCharDataset(
     sumPerWeekAmount: {[key: string]: {[key: string]: number}}
-  ): CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]> {
+  ): CharDatasetShortGraphDto<CharSingleDatasetShortGraphDto[]> {
     const labels: string[] = [];
-    const values: CharSingleDatasetShortGraphModel[] = [];
+    const values: CharSingleDatasetShortGraphDto[] = [];
 
     for (const [label, amounts] of Object.entries(sumPerWeekAmount)) {
       const data: number[] = [];
@@ -125,9 +125,9 @@ export class DataForGraphService {
         data.push(amount);
       }
 
-      values.push(new CharSingleDatasetShortGraphModel(label, data));
+      values.push(new CharSingleDatasetShortGraphDto(label, data));
     }
 
-    return new CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]>(labels, values);
+    return new CharDatasetShortGraphDto<CharSingleDatasetShortGraphDto[]>(labels, values);
   }
 }

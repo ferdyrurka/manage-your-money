@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ChartDataSets} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {Observable} from 'rxjs';
-import {DataForGraphModel} from '../../../model/data-for-graph.model';
+import {DataForGraphDto} from '../../../dto/data-for-graph.dto';
 import {Colors} from '../../../service/colors';
 import {DataForGraphService} from '../../../service/data-for-graph.service';
 
@@ -30,13 +30,13 @@ export class CategoryComponent implements OnInit {
   public lineChartType = 'line';
 
   @Input()
-  private operationsExpenseObservable: Observable<DataForGraphModel[]>;
+  private operationsExpenseObservable: Observable<DataForGraphDto[]>;
 
   constructor(private dataForGraphService: DataForGraphService) { }
 
   ngOnInit(): void {
     this.operationsExpenseObservable.subscribe(
-      (data: DataForGraphModel[]) => {
+      (data: DataForGraphDto[]) => {
         const dataForGraph = this.dataForGraphService.groupByCategoriesOperations(data);
 
         this.lineChartLabels = dataForGraph.labels;

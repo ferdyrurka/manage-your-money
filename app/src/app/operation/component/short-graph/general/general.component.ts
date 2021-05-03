@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DataForGraphModel} from '../../../model/data-for-graph.model';
+import {DataForGraphDto} from '../../../dto/data-for-graph.dto';
 import {Color, Label} from 'ng2-charts';
 import {ChartDataSets} from 'chart.js';
 import {DataForGraphService} from '../../../service/data-for-graph.service';
@@ -42,17 +42,17 @@ export class GeneralComponent implements OnInit {
   public lineChartType = 'line';
 
   @Input()
-  private operationsExpenseObservable: Observable<DataForGraphModel[]>;
+  private operationsExpenseObservable: Observable<DataForGraphDto[]>;
 
   @Input()
-  private operationsIncomingObservable: Observable<DataForGraphModel[]>;
+  private operationsIncomingObservable: Observable<DataForGraphDto[]>;
 
   constructor(private dataForModelService: DataForGraphService) {
   }
 
   ngOnInit(): void {
     this.operationsExpenseObservable.subscribe(
-      (operations: DataForGraphModel[]) => {
+      (operations: DataForGraphDto[]) => {
         const groupByData = this.dataForModelService.groupByGeneralOperations(operations);
 
         this.lineChartData[0].data = groupByData.values;
@@ -66,7 +66,7 @@ export class GeneralComponent implements OnInit {
     );
 
     this.operationsIncomingObservable.subscribe(
-      (operations: DataForGraphModel[]) => {
+      (operations: DataForGraphDto[]) => {
         const groupByData = this.dataForModelService.groupByGeneralOperations(operations);
 
         this.lineChartData[1].data = groupByData.values;

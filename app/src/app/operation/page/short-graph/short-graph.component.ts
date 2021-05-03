@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {OperationApi} from '../../api/operation.api';
-import {DataForGraphModel} from '../../model/data-for-graph.model';
+import {DataForGraphDto} from '../../dto/data-for-graph.dto';
 import {ErrorMessageService} from '../../../shared/service/error-message.service';
 import moment from 'moment';
-import {GraphDateModel} from '../../model/graph-date.model';
+import {GraphDateDto} from '../../dto/graph-date.dto';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -12,13 +12,13 @@ import {Observable} from 'rxjs';
   styleUrls: ['./short-graph.component.scss']
 })
 export class ShortGraphComponent implements OnInit {
-  public operationsExpenseObservable: Observable<DataForGraphModel[]>;
-  public operationsIncomingObservable: Observable<DataForGraphModel[]>;
+  public operationsExpenseObservable: Observable<DataForGraphDto[]>;
+  public operationsIncomingObservable: Observable<DataForGraphDto[]>;
 
   constructor(private operationApi: OperationApi, private errorMessageService: ErrorMessageService) { }
 
   ngOnInit(): void {
-    const date: string = moment().subtract(GraphDateModel.AFTER_DAYS, 'days').format('YYYY-MM-DD');
+    const date: string = moment().subtract(GraphDateDto.AFTER_DAYS, 'days').format('YYYY-MM-DD');
 
     this.operationsExpenseObservable = this.operationApi.findAllForGraph(date, null, 0);
     this.operationsIncomingObservable = this.operationApi.findAllForGraph(date, 0, null);

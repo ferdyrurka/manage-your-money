@@ -1,4 +1,4 @@
-export class DataForGraphModel {
+export class DataForGraphDto {
   id: string;
 
   amount: number;

@@ -1,8 +1,8 @@
 import { PageEvent } from '@angular/material/paginator';
-import {CursorModel} from '../../operation/model/cursor.model';
+import {CursorDto} from '../../operation/dto/cursor.dto';
 
 export class PaginatorGraphqlService {
-  public static getAfterAndBeforeByPageEvent(event: PageEvent, models: CursorModel[]): {after: string|null, before: string|null} {
+  public static getAfterAndBeforeByPageEvent(event: PageEvent, models: CursorDto[]): {after: string|null, before: string|null} {
     if (event === null || event.pageIndex === 0) {
       return {
         after: null,

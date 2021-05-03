@@ -5,5 +5,11 @@
         <mat-icon>publish</mat-icon>
       </button>
     </div>
+    <div>
+      <button mat-icon-button aria-label="Create" (click)="openCreateModal()">
+        <mat-icon>create</mat-icon>
+      </button>
+    </div>
   </div>
+  <app-operation-component-list [eventEmitter]="eventEmitter"></app-operation-component-list>
 </div>

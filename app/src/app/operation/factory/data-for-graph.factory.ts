@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
-import {DataForGraphModel} from '../model/data-for-graph.model';
+import {DataForGraphDto} from '../dto/data-for-graph.dto';
 
 @Injectable()
 export class DataForGraphFactory {
-  public createForShortGraph(operations: any): DataForGraphModel[]
+  public createForShortGraph(operations: any): DataForGraphDto[]
   {
-    const models: DataForGraphModel[] = [];
+    const models: DataForGraphDto[] = [];
 
     operations.forEach(operation => {
-      const model = new DataForGraphModel();
+      const model = new DataForGraphDto();
       model.amount = operation.amount;
       model.id = operation.id;
       model.payAt = operation.payAt;
@@ -33,14 +33,13 @@ export class DataForGraphFactory {
     return models;
   }
 
-  private buildCategories(operationCategories: {edges: {node: {name: string}}[]}): {name: string}[]|null
+  private buildCategories(operationCategories: {name: string}[]): {name: string}[]|null
   {
     if (operationCategories) {
-      const categoriesEdges = operationCategories.edges;
       const categories = [];
 
-      categoriesEdges.forEach((category) => {
-        categories.push({name: category.node.name});
+      operationCategories.forEach((category) => {
+        categories.push({name: category.name});
       });
 
       return categories;
