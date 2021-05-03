@@ -10,6 +10,7 @@ import {DataForGraphFactory} from '../factory/data-for-graph.factory';
 import {DataForGraphDto} from '../dto/data-for-graph.dto';
 import {OperationFactory} from '../factory/operation.factory';
 import {OperationDto} from '../dto/operation.dto';
+import {Operation} from '../entity/operation';
 
 @Injectable()
 export class OperationApi {
@@ -111,5 +112,19 @@ export class OperationApi {
 
   public findAllRefresh(): void {
     this.findAllQuery.refetch();
+  }
+
+  public save(operation: Operation): Observable<Operation> {
+    if (operation.id) {
+      return this.http.put<Operation>(
+        environment.apiUrl + operation.id,
+        operation
+      );
+    }
+
+    return this.http.post<Operation>(
+      environment.apiUrl + this.uri,
+      operation
+    );
   }
 }

@@ -31,6 +31,11 @@ import { ListComponent } from './component/list/list.component';
 import { FormComponent } from './component/form/form.component';
 import { LocationFormComponent } from './component/location-form/location-form.component';
 import { TypeFormComponent } from './component/type-form/type-form.component';
+import {LocationFactory} from './factory/location.factory';
+import {TypeFactory} from './factory/type.factory';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {PayAtFilter} from './service/filter/pay-at.filter';
 
 @NgModule({
   declarations: [
@@ -61,6 +66,8 @@ import { TypeFormComponent } from './component/type-form/type-form.component';
     MatAutocompleteModule,
     NgxMatFileInputModule,
     ChartsModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
   ],
   providers: [
     MyErrorStateMatcher,
@@ -70,6 +77,9 @@ import { TypeFormComponent } from './component/type-form/type-form.component';
     OperationFactory,
     DataForGraphFactory,
     DataForGraphService,
+    LocationFactory,
+    TypeFactory,
+    PayAtFilter,
   ],
   bootstrap: []
 })

@@ -73,6 +73,7 @@ class Operation
      * @ORM\Column(type="date")
      */
     #[Groups(['read'])]
+    #[Assert\GreaterThan('now')]
     private DateTime $payAt;
 
     /**

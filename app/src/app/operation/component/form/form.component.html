@@ -1,1 +1,50 @@
-<p>form works!</p>
+<div class="loading">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
+
+<div [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
+  <div class="small-form-wrapper" [formGroup]="form">
+    <h1 *ngIf="!data.dto.id">Create operation</h1>
+
+    <h1 *ngIf="data.dto.id">Update operation</h1>
+
+    <mat-form-field>
+      <mat-label>Pay at</mat-label>
+
+      <input matInput [matDatepicker]="picker" [formControl]="form.get('payAt')" [errorStateMatcher]="matcher"
+             [matDatepickerFilter]="payAtFilter.filter" placeholder="Eg. 2021-05-03">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      <mat-error *ngIf="form.get('payAt').hasError('required')">
+        Field name is required field
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Amount</mat-label>
+
+      <input type="text" matInput [formControl]="form.get('amount')" [errorStateMatcher]="matcher"
+             placeholder="Eg. -10.45, 15.23">
+
+      <mat-error *ngIf="form.get('amount').hasError('required')">
+        Field name is required field
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>balance after surgery</mat-label>
+
+      <input type="text" matInput [formControl]="form.get('balanceAfterSurgery')" [errorStateMatcher]="matcher"
+             placeholder="Eg. -1000, 1000">
+
+      <mat-error *ngIf="form.get('balanceAfterSurgery').hasError('required')">
+        Field name is required field
+      </mat-error>
+    </mat-form-field>
+
+    <div class="mt-1">
+      <button mat-raised-button color="primary" [disabled]="loading" (click)="save();">Save</button>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import {OperationDto} from '../dto/operation.dto';
 import {LocationDto} from '../dto/location.dto';
 import {TypeDto} from '../dto/type.dto';
 import moment from 'moment';
+import {Operation} from '../entity/operation';
 
 @Injectable()
 export class OperationFactory {
@@ -13,6 +14,32 @@ export class OperationFactory {
     model.file = form.get('file').value;
 
     return model;
+  }
+
+  public create(): OperationDto
+  {
+    const dto = new OperationDto();
+    dto.payAt = moment().format('YYYY-MM-DD');
+
+    return dto;
+  }
+
+  public createWriteModel(dto: OperationDto, form: FormGroup): Operation {
+    const writeModel = new Operation();
+    // dto.name = form.get('name')?.value;
+    // dto.locations = [];
+    //
+    // const locations = form.get('locations')?.value;
+    //
+    // if (locations.length > 0) {
+    //   locations.forEach((location: { name: string, id: string }) => {
+    //     if (location.id) {
+    //       dto.locations.push(location.id);
+    //     }
+    //   });
+    // }
+
+    return writeModel;
   }
 
   public findAllToResultModels(edges: []): OperationDto[] {
