@@ -10,6 +10,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -21,12 +22,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: [
         'get' => ['normalization_context' => ['groups' => ['read']]],
-        'post' => ['denormalization_context' => ['groups' => ['write']]],
+        'post' => ['denormalization_context' => ['groups' => ['write'], 'datetime_format' => 'Y-m-d']],
     ],
     graphql: ['item_query', 'collection_query'],
     itemOperations: [
         'get' => ['normalization_context' => ['groups' => ['read']]],
-        'patch' => ['denormalization_context' => ['groups' => ['write']]],
+        'patch' => ['denormalization_context' => ['groups' => ['write'], 'datetime_format' => 'Y-m-d']],
         'delete',
     ],
     attributes: ['pagination_client_enabled' => true],
@@ -72,12 +73,11 @@ class Operation
     /**
      * @ORM\Column(type="date")
      */
-    #[Groups(['read'])]
-    #[Assert\GreaterThan('now')]
-    #[Assert\Date]
+    #[Groups(['read', 'write'])]
+    #[Assert\LessThanOrEqual('now')]
     #[Assert\NotBlank]
     #[Assert\NotNull]
-    private DateTime $payAt;
+    private DateTimeInterface $payAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
