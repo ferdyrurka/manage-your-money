@@ -3,10 +3,13 @@ import {DataForGraphModel} from '../model/data-for-graph.model';
 import moment from 'moment';
 import {GraphDateModel} from '../model/graph-date.model';
 import {range} from 'rxjs';
+import {CharDatasetShortGraphModel} from '../model/char-dataset-short-graph.model';
+import {CharSingleDatasetShortGraphModel} from '../model/char-single-dataset-short-graph.model';
 
 @Injectable()
 export class DataForGraphService {
-  public groupByGeneralOperations(operations: DataForGraphModel[]): {labels: string[], values: number[]}
+  // todo: refactoring to use in return model
+  public groupByGeneralOperations(operations: DataForGraphModel[]): CharDatasetShortGraphModel<number[]>
   {
     const sumPerWeekAmount: {[key: string]: number} = {};
 
@@ -28,12 +31,12 @@ export class DataForGraphService {
       values.push(sumAmount);
     }
 
-    return {labels, values};
+    return new CharDatasetShortGraphModel<number[]>(labels, values);
   }
 
   public groupByTypeOperations(
     operations: DataForGraphModel[]
-  ): {labels: string[], values: {data: number[], label: string}[]} {
+  ): CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]> {
     const sumPerWeekAmount: {[key: string]: {[key: string]: number}} = {};
 
     operations.forEach((operation: DataForGraphModel) => {
@@ -60,7 +63,7 @@ export class DataForGraphService {
 
   public groupByCategoriesOperations(
     operations: DataForGraphModel[]
-  ): {labels: string[], values: {data: number[], label: string}[]} {
+  ): CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]> {
     const sumPerWeekAmount: {[key: string]: {[key: string]: number}} = {};
 
     operations.forEach((operation: DataForGraphModel) => {
@@ -107,9 +110,9 @@ export class DataForGraphService {
 
   private preparedResultDataForMultiCharDataset(
     sumPerWeekAmount: {[key: string]: {[key: string]: number}}
-  ): {labels: string[], values: {data: number[], label: string}[]} {
+  ): CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]> {
     const labels: string[] = [];
-    const values: {data: number[], label: string}[] = [];
+    const values: CharSingleDatasetShortGraphModel[] = [];
 
     for (const [label, amounts] of Object.entries(sumPerWeekAmount)) {
       const data: number[] = [];
@@ -122,9 +125,9 @@ export class DataForGraphService {
         data.push(amount);
       }
 
-      values.push({data, label});
+      values.push(new CharSingleDatasetShortGraphModel(label, data));
     }
 
-    return {labels, values};
+    return new CharDatasetShortGraphModel<CharSingleDatasetShortGraphModel[]>(labels, values);
   }
 }
