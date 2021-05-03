@@ -8,7 +8,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
-use App\Controller\FindAllOperationsForGraphController;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     attributes: ['pagination_client_enabled' => true],
     denormalizationContext: ['groups' => ['write']],
-    formats: ['json'],
+    formats: ['json', 'jsonld', 'html'],
     normalizationContext: ['groups' => ['read']]
 )]
 #[ApiFilter(DateFilter::class, properties: ['payAt' => DateFilter::EXCLUDE_NULL,])]
@@ -52,6 +51,7 @@ class Operation
      * @ORM\Column(type="float")
      */
     #[Assert\NotBlank]
+    #[Assert\NotNull]
     #[Groups(['read', 'write'])]
     private float $amount;
 
@@ -59,21 +59,24 @@ class Operation
      * @ORM\Column(type="float")
      */
     #[Assert\NotBlank]
+    #[Assert\NotNull]
     #[Groups(['read', 'write'])]
     private float $balanceAfterSurgery;
 
     /**
      * @ORM\Column(type="text")
      */
-    #[Assert\NotBlank]
     #[Groups(['read', 'write'])]
-    private string $description;
+    private string $description = '';
 
     /**
      * @ORM\Column(type="date")
      */
     #[Groups(['read'])]
     #[Assert\GreaterThan('now')]
+    #[Assert\Date]
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
     private DateTime $payAt;
 
     /**
@@ -92,7 +95,6 @@ class Operation
      * @ORM\ManyToOne(targetEntity=OperationLocation::class)
      * @ORM\JoinColumn(nullable=true)
      */
-    #[Assert\NotNull]
     #[Groups(['read', 'write'])]
     private ?OperationLocation $location = null;
 
@@ -100,7 +102,6 @@ class Operation
      * @ORM\ManyToOne(targetEntity=OperationType::class)
      * @ORM\JoinColumn(nullable=true)
      */
-    #[Assert\NotNull]
     #[Groups(['read', 'write'])]
     private ?OperationType $type = null;
 

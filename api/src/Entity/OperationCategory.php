@@ -28,6 +28,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
         'put' => ['denormalization_context' => ['groups' => ['write']]],
     ],
     denormalizationContext: ['groups' => ['write']],
+    formats: ['json', 'jsonld', 'html'],
     normalizationContext: ['groups' => ['read',]],
 )]
 class OperationCategory
