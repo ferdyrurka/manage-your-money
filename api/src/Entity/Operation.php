@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     graphql: ['item_query', 'collection_query'],
     itemOperations: [
         'get' => ['normalization_context' => ['groups' => ['read']]],
-        'patch' => ['denormalization_context' => ['groups' => ['write'], 'datetime_format' => 'Y-m-d']],
+        'put' => ['denormalization_context' => ['groups' => ['write'], 'datetime_format' => 'Y-m-d']],
         'delete',
     ],
     attributes: ['pagination_client_enabled' => true],
@@ -38,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(DateFilter::class, properties: ['payAt' => DateFilter::EXCLUDE_NULL,])]
 #[ApiFilter(RangeFilter::class, properties: ['amount'])]
 #[ApiFilter(OrderFilter::class, properties: ['payAt'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['description' => SearchFilter::STRATEGY_PARTIAL,])]
 class Operation
 {
     /**

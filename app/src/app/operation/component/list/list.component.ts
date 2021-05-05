@@ -8,6 +8,7 @@ import {OperationApi} from '../../api/operation.api';
 import {ErrorMessageService} from '../../../shared/service/error-message.service';
 import {OperationDto} from '../../dto/operation.dto';
 import {FormComponent} from '../form/form.component';
+import {OperationFactory} from '../../factory/operation.factory';
 
 @Component({
   selector: 'app-operation-component-list',
@@ -48,6 +49,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private modal: MatDialog,
     private operationApi: OperationApi,
     private errorMessageService: ErrorMessageService,
+    private factory: OperationFactory,
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +105,26 @@ export class ListComponent implements OnInit, OnDestroy {
     if (this.pageEvent.previousPageIndex !== this.pageEvent.pageIndex) {
       this.loadNewData();
     }
+  }
+
+  public remove(operation: OperationDto): void
+  {
+    this.loading = true;
+
+    this.operationApi.remove(
+      this.factory.createWriteModelFromDto(operation)
+    ).subscribe(
+      () => {
+        this.refreshData();
+        this.loading = false;
+      },
+      (err) => {
+        this.loading = false;
+        this.errorMessageService.show();
+
+        console.error(err);
+      }
+    );
   }
 
   private loadNewData(): void

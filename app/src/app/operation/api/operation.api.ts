@@ -119,6 +119,10 @@ export class OperationApi {
     this.findAllQuery.refetch();
   }
 
+  public remove(operation: Operation): Observable<Operation> {
+    return this.http.delete<Operation>(environment.apiUrl + operation.id);
+  }
+
   public save(operation: Operation): Observable<Operation> {
     if (operation.id) {
       return this.http.put<Operation>(

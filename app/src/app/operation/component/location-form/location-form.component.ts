@@ -61,5 +61,4 @@ export class LocationFormComponent implements OnInit {
         },
       );
   }
-
 }

@@ -21,6 +21,7 @@ export class OperationFactory {
     const dto = new OperationDto();
     dto.payAt = moment().format('YYYY-MM-DD');
     dto.location = new LocationDto();
+    dto.type = new TypeDto();
 
     return dto;
   }
@@ -33,7 +34,20 @@ export class OperationFactory {
     writeModel.balanceAfterSurgery = Number(form.get('balanceAfterSurgery').value);
 
     writeModel.location = form.get('location').get('id')?.value;
-    // writeModel.type = form.get('type').get('id')?.value;
+    writeModel.type = form.get('type').get('id')?.value;
+
+    return writeModel;
+  }
+
+  public createWriteModelFromDto(operation: OperationDto): Operation {
+    const writeModel = new Operation();
+    writeModel.id = operation.id;
+    writeModel.amount = operation.amount;
+    writeModel.payAt = operation.payAt;
+    writeModel.balanceAfterSurgery = operation.balanceAfterSurgery;
+
+    writeModel.location = operation.location?.id;
+    writeModel.type = operation.type?.id;
 
     return writeModel;
   }

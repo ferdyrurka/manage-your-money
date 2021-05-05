@@ -1,1 +1,17 @@
-<p>type-form works!</p>
+<mat-form-field>
+  <mat-label>Type</mat-label>
+
+  <input type="text"
+         placeholder="Eg. biedronka, kfc"
+         aria-label="Location"
+         matInput
+         [formControl]="form.get('type').get('name')"
+         [errorStateMatcher]="matcher"
+         [matAutocomplete]="auto">
+
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" (click)="form.get('type').get('id').setValue(option.id)">
+      {{ option.name }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
