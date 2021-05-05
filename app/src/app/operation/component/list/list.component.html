@@ -2,6 +2,24 @@
   <mat-spinner *ngIf="loading"></mat-spinner>
 </div>
 
+<section class="filter-wrapper" [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          What are you looking for?
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <app-operation-component-filter [filterDto]="filterDto"></app-operation-component-filter>
+        <div>
+          <button mat-raised-button color="primary" (click)="search()">Search</button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</section>
+
 <div class="list-items" [ngClass]="loading ? 'hidden-animation' : 'show-animation'">
   <table mat-table [dataSource]="operations">
     <ng-container matColumnDef="payAt">
@@ -55,6 +73,7 @@
     [pageSize]="limit"
     [length]="operationsCount"
     (page)="pageHandle($event)"
+    [pageIndex]="pageIndex"
   >
   </mat-paginator>
 </div>

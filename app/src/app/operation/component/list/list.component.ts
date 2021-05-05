@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PageSizeOptions} from '../../../shared/paginator/page-size-options';
 import {Subscription} from 'rxjs';
 import {PaginatorGraphqlService} from '../../../shared/service/paginator-graphql.service';
@@ -9,6 +9,7 @@ import {ErrorMessageService} from '../../../shared/service/error-message.service
 import {OperationDto} from '../../dto/operation.dto';
 import {FormComponent} from '../form/form.component';
 import {OperationFactory} from '../../factory/operation.factory';
+import {FilterDto} from '../../dto/filter.dto';
 
 @Component({
   selector: 'app-operation-component-list',
@@ -18,6 +19,8 @@ import {OperationFactory} from '../../factory/operation.factory';
 export class ListComponent implements OnInit, OnDestroy {
 
   @Input() public eventEmitter: EventEmitter<string>;
+
+  @Output() public filterDto: FilterDto = new FilterDto();
 
   public readonly displayedColumns = [
     'payAt',
@@ -39,6 +42,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public limit = 10;
 
+  public pageIndex = 0;
+
   private operationsSubscription: Subscription|null = null;
 
   private eventEmitterSubscription: Subscription|null = null;
@@ -50,7 +55,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private operationApi: OperationApi,
     private errorMessageService: ErrorMessageService,
     private factory: OperationFactory,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadNewData();
@@ -94,6 +100,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public pageHandle(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
     this.pageEvent = event;
 
     if (this.limit !== this.pageEvent.pageSize) {
@@ -127,10 +134,22 @@ export class ListComponent implements OnInit, OnDestroy {
     );
   }
 
+  public search(): void
+  {
+    this.loading = true;
+
+    this.operations = [];
+    this.pageEvent = null;
+    this.operationsCount = 0;
+    this.pageIndex = 0;
+    this.limit = 10;
+
+    this.loadNewData();
+  }
+
   private loadNewData(): void
   {
     const paginatorData = PaginatorGraphqlService.getAfterAndBeforeByPageEvent(this.pageEvent, this.operations);
-
     this.load(paginatorData.after, paginatorData.before);
   }
 
@@ -141,21 +160,16 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private load(after: string|null, before: string|null): void {
     this.loading = true;
-
-    if (this.operationsSubscription instanceof Subscription) {
-      this.operationApi.findAll(this.limit, after, before);
-      return;
-    }
+    this.operationsSubscription?.unsubscribe();
 
     this.operationsSubscription = this.operationApi
-      .findAll(this.limit, after, before)
+      .findAll(this.limit, after, before, this.filterDto)
       .subscribe(
         (data) => {
           this.operations = data.result;
           this.operationsCount = data.totalCount;
 
           this.pageSizeOptions = PageSizeOptions.getSizeOptions(this.operationsCount);
-
           this.loading = false;
         },
         (err) => {

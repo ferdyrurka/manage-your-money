@@ -1,0 +1,30 @@
+<div class="filter-form-wrapper">
+  <mat-form-field>
+    <mat-label>From amount</mat-label>
+    <input type="number" [(ngModel)]="filterDto.fromAmount" matInput placeholder="Eg. -10.45, 15.23">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>To amount</mat-label>
+    <input type="number" [(ngModel)]="filterDto.toAmount" matInput placeholder="Eg. -10.45, 15.23">
+  </mat-form-field>
+</div>
+
+<div class="filter-form-wrapper">
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>Pay at</mat-label>
+    <mat-date-range-input [rangePicker]="campaignOnePicker" [dateFilter]="payAtFilter.filter">
+      <input matStartDate placeholder="Start date" [(ngModel)]="filterDto.fromDate">
+      <input matEndDate placeholder="End date" [(ngModel)]="filterDto.toDate">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+    <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+  </mat-form-field>
+</div>
+
+<div class="filter-form-wrapper">
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input type="text" [(ngModel)]="filterDto.descriptionHave" matInput placeholder="0000 1234 5678">
+  </mat-form-field>
+</div>

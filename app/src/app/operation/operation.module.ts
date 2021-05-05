@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -38,6 +38,8 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {PayAtFilter} from './service/filter/pay-at.filter';
 import {TypeApi} from './api/type.api';
 import {LocationApi} from './api/location.api';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { FilterComponent } from './component/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import {LocationApi} from './api/location.api';
     FormComponent,
     LocationFormComponent,
     TypeFormComponent,
+    FilterComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -70,6 +73,8 @@ import {LocationApi} from './api/location.api';
     ChartsModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatExpansionModule,
+    FormsModule,
   ],
   providers: [
     MyErrorStateMatcher,

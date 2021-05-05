@@ -11,6 +11,7 @@ import {DataForGraphDto} from '../dto/data-for-graph.dto';
 import {OperationFactory} from '../factory/operation.factory';
 import {OperationDto} from '../dto/operation.dto';
 import {Operation} from '../entity/operation';
+import {FilterDto} from '../dto/filter.dto';
 
 @Injectable()
 export class OperationApi {
@@ -62,14 +63,23 @@ export class OperationApi {
   public findAll(
     limit: number,
     after: string | null,
-    before: string | null
+    before: string | null,
+    filterDto: FilterDto,
   ): Observable<{ result: OperationDto[]; totalCount: number }> {
     if (this.findAllQuery === null) {
       this.findAllQuery = this.apollo
         .watchQuery({
           query: gql`
-           query FindAll($limit: Int!, $after: String, $before: String) {
-            operations(first: $limit, after: $after, before: $before, , order: {payAt: "DESC"}) {
+           query FindAll($limit: Int!, $after: String, $before: String, $gteAmount: String, $lteAmount: String, $afterPayAt: String, $beforePayAt: String, $description: String) {
+            operations(
+              first: $limit,
+              after: $after,
+              before: $before,
+              order: {payAt: "DESC"},
+              amount: {gte: $gteAmount, lte: $lteAmount},
+              payAt: {after: $afterPayAt, before: $beforePayAt},
+              description: $description,
+            ) {
               totalCount,
               edges {
                 node {
@@ -92,10 +102,28 @@ export class OperationApi {
             }
            }
           `,
-          variables: {limit, after, before}
+          variables: {
+            limit,
+            after,
+            before,
+            gteAmount: filterDto.fromAmount?.toString(),
+            lteAmount: filterDto.toAmount?.toString(),
+            afterPayAt: filterDto.fromDate?.format('YYYY-MM-DD'),
+            beforePayAt: filterDto.toDate?.format('YYYY-MM-DD'),
+            description: filterDto.descriptionHave,
+          }
         });
     } else {
-      this.findAllQuery.refetch({limit, after, before});
+      this.findAllQuery.refetch({
+        limit,
+        after,
+        before,
+        gteAmount: filterDto.fromAmount?.toString(),
+        lteAmount: filterDto.toAmount?.toString(),
+        afterPayAt: filterDto.fromDate?.format('YYYY-MM-DD'),
+        beforePayAt: filterDto.toDate?.format('YYYY-MM-DD'),
+        description: filterDto.descriptionHave,
+      });
     }
 
     return this.findAllQuery
